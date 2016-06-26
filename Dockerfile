@@ -10,5 +10,3 @@ RUN apt-get update && apt-get install -y \
   ntpdate \
   ca-certificates \
   tftpd-hpa
-
-EXPOSE 69/udp
