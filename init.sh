@@ -24,4 +24,5 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-docker run -p 0.0.0.0:69:69/udp -p 0.0.0.0:111:111/udp -p 0.0.0.0:2049:2049/tcp -v ${PWD}/${NETBOOT_DIR}:/srv/tftp -v ${PWD}/${NFS_DIR}:/srv/nfs -t -i 3mdeb/pxe-server
+# docker run -p 0.0.0.0:69:69/udp -p 0.0.0.0:111:111/udp -p 0.0.0.0:2049:2049/tcp -v ${PWD}/${NETBOOT_DIR}:/srv/tftp -v ${PWD}/${NFS_DIR}:/srv/nfs -t -i 3mdeb/pxe-server
+docker run -p 0.0.0.0:69:69/udp -v ${PWD}/${NETBOOT_DIR}:/srv/tftp -t -i 3mdeb/pxe-server
