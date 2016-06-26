@@ -21,3 +21,17 @@ configuration and nfs files. You can override this behavior by setting
 ```
 NETBOOT_DIR=../my-netboot-dir NFT=../my-nfs ./init.sh
 ```
+
+By default if no `NETBOOT_DIR` set `init.sh` downloads Debian jessie netboot
+package and extract it to `../netboot`.
+
+APU2 development and testing
+----------------------------
+
+For those who want to test APU2 I advise to use [3mdeb/netboot](https://github.com/3mdeb/netboot) configuration.
+After finished `init.sh` as described above. Run:
+
+```
+git clone https://github.com/3mdeb/netboot.git apu2-netboot
+resync -r apu2-netboot ../netboot
+```
