@@ -9,4 +9,5 @@ RUN apt-get update && apt-get install -y \
   python-dev \
   ntpdate \
   ca-certificates \
-  tftpd-hpa
+  tftpd-hpa \
+  nfs-kernel-server
