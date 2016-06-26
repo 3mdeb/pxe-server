@@ -1,8 +1,9 @@
 #!/bin/bash
 
+: ${NETBOOT_DIR:=../netboot}
+: ${NFS_DIR:=../nfs}
+
 NETBOOT_URL=http://ftp.nl.debian.org/debian/dists/jessie/main/installer-i386/current/images/netboot/netboot.tar.gz
-NETBOOT_DIR=netboot
-NFS_DIR=nfs
 NETBOOT_TAR=netboot.tar.gz
 
 if [ ! -d  $NETBOOT_DIR ]; then
@@ -10,6 +11,10 @@ if [ ! -d  $NETBOOT_DIR ]; then
 	wget $NETBOOT_URL
 	tar xvf $NETBOOT_TAR -C $NETBOOT_DIR
 	rm $NETBOOT_TAR
+fi
+
+if [ ! -d  $NFS_DIR ]; then
+	mkdir -p $NFS_DIR
 fi
 
 docker build -t 3mdeb/pxe-server .
