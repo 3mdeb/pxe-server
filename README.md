@@ -19,7 +19,7 @@ configuration and nfs files. You can override this behavior by setting
 `NETBOOT_DIR` and `NFS_DIR`, ie.:
 
 ```
-NETBOOT_DIR=../my-netboot-dir NFT=../my-nfs ./init.sh
+NETBOOT_DIR=../my-netboot-dir NFS=../my-nfs ./init.sh
 ```
 
 By default if no `NETBOOT_DIR` set `init.sh` downloads Debian jessie netboot
