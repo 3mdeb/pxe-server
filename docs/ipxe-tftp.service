@@ -1,0 +1,11 @@
+[Unit]
+Description= tftp pxe server container
+Requires=docker.service
+After=docker.service
+
+[Service]
+ExecStart=/usr/bin/docker run --net=host -d -p 69:69/udp -v /opt/pxe-tftpd/netboot:/srv/tftp -t -i 3mdeb/pxe-server
+NotifyAccess=all
+
+[Install]
+WantedBy=multi-user.target
