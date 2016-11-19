@@ -39,7 +39,7 @@ service tftpd-hpa start
 For debugging purposes `tcpdump` can be used (displaying connection requests).
 
 ```
-apt-get install tcp-dump
+apt-get install tcpdump
 tcpdump
 ```
 
