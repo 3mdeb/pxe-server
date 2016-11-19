@@ -3,7 +3,7 @@
 : ${NETBOOT_DIR:=../netboot}
 : ${NFS_DIR:=../nfs}
 
-NETBOOT_URL=http://ftp.nl.debian.org/debian/dists/jessie/main/installer-i386/current/images/netboot/netboot.tar.gz
+NETBOOT_URL=http://ftp.nl.debian.org/debian/dists/testing/main/installer-i386/current/images/netboot/netboot.tar.gz
 NETBOOT_TAR=netboot.tar.gz
 
 if [ ! -d  $NETBOOT_DIR ]; then
