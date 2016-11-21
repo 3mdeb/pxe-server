@@ -5,12 +5,12 @@ This guide is about setting up an iPXE-tftp server on home server machine.
 ## Installation ##
 
 1. Server should be running inside a Docker container therefore docker is
-required. To install docker on Debian go [here](https://docs.docker.com/engine/installation/linux/debian/).
+required. To install docker go [here](https://docs.docker.com/engine/installation/).
 
 2. To build environment and install ipxe server go to [this](https://github.com/3mdeb/pxe-server)
-address and follow instructions. I belive that according to FHS, pxe-server
-should be cloned to `/opt/pxe-tftpd/`. Note that this catalog is used later. It
-can be changed but this requires changes in `ipxe-tftp.service` (if used).
+address and follow instructions. According to FHS, pxe-server should be cloned
+to `/opt/pxe-tftpd/`. Note that this catalog is used later. It can be changed
+but this requires changes in `ipxe-tftp.service` (if used).
 
 3. Script `./init.sh` builds environment for Debian i386 installation.
 
