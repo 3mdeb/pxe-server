@@ -3,9 +3,14 @@ Description= tftp pxe server container
 Requires=docker.service
 After=docker.service
 
+
 [Service]
-ExecStart=/usr/bin/docker run --net=host -d -p 69:69/udp -v /opt/pxe-tftpd/netboot:/srv/tftp -t -i 3mdeb/pxe-server
+ExecStartPre=-/usr/bin/docker kill ipxetftp
+ExecStartPre=-/usr/bin/docker rm ipxetftp
+ExecStart=/usr/bin/docker run --name ipxetftp --net=host -p 69:69/udp -v /opt/pxe-tftpd/netboot:/srv/tftp -t 3mdeb/pxe-server
+ExecStopPost=/usr/bin/docker stop -t 2 ipxetftp
 NotifyAccess=all
+
 
 [Install]
 WantedBy=multi-user.target
