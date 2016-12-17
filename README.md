@@ -51,7 +51,7 @@ After finished `init.sh` as described above. Run:
 
 ```
 git clone https://github.com/3mdeb/netboot.git apu2-netboot
-rsync -r apu2-netboot ../netboot
+rsync -r apu2-netboot/ ../netboot
 ```
 
 Ready to use package can be found [here](http://3mdeb.com/netboot/netboot-20160627.tar.gz).
