@@ -17,7 +17,8 @@ variable `NETBOOT`.
 
 
 ```
-git clone https://github.com/miczyg/pxe-server.git
+git clone https://github.com/miczyg1/pxe-server.git
+git checkout diskless-netboot
 ./init.sh [NETBOOT=/path/to/netboot/dir]
 ```
 
