@@ -1,7 +1,6 @@
 #!/bin/bash
 
-: ${NETBOOT_DIR:=../netboot}
-
+: ${NETBOOT_DIR:=./netboot}
 docker build -t 3mdeb/pxe-server .
 
 if [ $? -ne 0 ]; then
@@ -9,4 +8,5 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-docker run -p 0.0.0.0:69:69/udp -v ${PWD}/${NETBOOT_DIR}:/srv/tftp -t -i 3mdeb/pxe-server
+docker run -p 69:69/udp --network=host -v ${PWD}/${NETBOOT_DIR}:/srv/tftp -t -i 3mdeb/pxe-server /bin/bash -c "bash /tftpdstart.sh;
+/bin/bash" 

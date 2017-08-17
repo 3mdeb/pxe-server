@@ -12,9 +12,13 @@ assumption that your host doesn't have port 69 in use.
 Usage
 -----
 
+`init.sh` assumes that netboot directory is `./netboot` or provide it as a
+variable `NETBOOT`.
+
+
 ```
-git clone https://github.com/3mdeb/pxe-server.git
-./init.sh
+git clone https://github.com/miczyg/pxe-server.git
+./init.sh [NETBOOT=/path/to/netboot/dir]
 ```
 
 APU2 development and testing
@@ -22,13 +26,30 @@ APU2 development and testing
 
 ## Prepare iPXE
 
-For those who want to test apu2 I advise to use [3mdeb/netboot](https://github.com/3mdeb/netboot) configuration.
-After finished `init.sh` as described above. Run:
+You have to provide PXE bootloader from any debian-like system netboot
+installation.
 
+Copy the `menu.cfg` and `syslinux.cfg` in correct directory. Do not forget to
+change nfsroot path and nfsroot server ip.
+
+## Prepare NFSroot
+
+`USERNAME` is a user name to be created for login.
+
+Example:
 ```
-git clone https://github.com/3mdeb/netboot.git
-NETBOOT_DIR=./netboot ./init.sh
+./create_rootfs.sh NFSROOT=/path/to/nfs/root USERNAME=name
 ```
+
+This script will create nfsroot file system, install necessary packages and
+configure exports. 
+
+## Preparing kernel for netboot with NFS support
+
+It is necessary to prepare a proper kernel image with nfs support. I compiled a
+4.8.5 kernel. Binary is in `netboot` directory and config in `kernel` directory.
+This kernel image should be placed in `netboot`. Otherwise changes in `menu.cfg`
+should be made.
 
 ## Booting iPXE on recent firmware
 
@@ -38,13 +59,11 @@ DHCP.
 Boot to iPXE and type:
 
 ```
-iPXE> ifconf net0
 iPXE> dhcp net0
 iPXE> set filename pxelinux.0
 iPXE> set next-server 192.168.0.106
 iPXE> chain tftp://${next-server}/${filename}
 ```
 
-## Robot Framework
 
-Some automation of above process was mage. Relevant source code can be found [here](https://github.com/pcengines/apu-test-suite)>
+
