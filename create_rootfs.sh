@@ -18,7 +18,7 @@ sudo echo "$NFSROOT    192.168.0.1/24(rw,sync,no_root_squash,no_subtree_check)" 
 sudo chown root:root $NFSROOT
 sudo chmod 755 $NFSROOT
 
-apt-get install nfs-kernel-server nfs-common
+apt-get install nfs-kernel-server nfs-common debootstrap
 /etc/init.d/nfs-kernel-server restart
 
 sudo debootstrap --foreign --arch amd64 jessie $NFSROOT http://deb.debian.org/debian
