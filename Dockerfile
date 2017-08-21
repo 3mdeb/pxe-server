@@ -10,4 +10,8 @@ RUN apt-get update && apt-get install -y \
   ntpdate \
   ca-certificates \
   tftpd-hpa \
-  nfs-kernel-server
+  nfs-kernel-server \
+  nfs-common \
+  udhcpd 
+
+ADD ./tftpdstart.sh /tftpdstart.sh 
