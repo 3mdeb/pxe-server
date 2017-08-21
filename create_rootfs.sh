@@ -38,7 +38,8 @@ EOF
 echo "deb http://deb.debian.org/debian jessie main" > /etc/apt/sources.list
 
 apt-get install -y --force-yes nfs-common locales sudo bc ssh ntpdate gettext \
-  autoconf wpasupplicant dialog makedev binutils
+  autoconf wpasupplicant dialog makedev binutils git make gcc pciutils \
+  libpci-dev libusb*
 
 
 echo "Now provide user password and other data"

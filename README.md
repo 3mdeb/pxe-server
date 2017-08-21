@@ -66,5 +66,13 @@ iPXE> set next-server 192.168.0.106
 iPXE> chain tftp://${next-server}/${filename}
 ```
 
+## Preparing flashrom
 
+When the system is booted it is time to get `flashrom`:
+
+```
+git clone https://github.com/flashrom/flashrom.git
+cd flashrom
+sudo make install
+```
 
