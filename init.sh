@@ -1,3 +1,4 @@
+#!/bin/bash
 # Usage:
 # CLOUD_USER=<cloud-username> NFS_SRV_IP=<server-ip> ./init.sh
 
@@ -14,12 +15,12 @@ ipvalid() {
   return 0
 }
 
-if [ -n "$NFS_SRV_IP" ]; then
+if [ -z "$NFS_SRV_IP" ]; then
 	echo "Please provide NFS server ip as NFS_SRV_IP"
 	exit 1
 fi
 
-if if [ -n "$CLOUD_USER" ]; then
+if [ -z "$CLOUD_USER" ]; then
 	echo "Please provide 3mdeb cloud username as CLOUD_USER"
 	exit 1
 fi
@@ -27,7 +28,6 @@ fi
 
 if ipvalid "$NFS_SRV_IP"; then
   echo "NFS server ip ($NFS_SRV_IP) is valid"
-  exit 0
 else
   echo "Wrong server ip address ($NFS_SRV_IP)"
   exit 1
@@ -61,13 +61,5 @@ mkdir voyage
 echo "Enter 3mdeb cloud user password"
 wget --user=$CLOUD_USER --ask-password https://cloud.3mdeb.com/remote.php/webdav/projects/pcengines/OSimages/voyage-0.11.0_amd64.tar.gz
 
-tar -xzvf voyage-0.11.0_amd64.tar.gz -C ./voyage && rm voyage-0.11.0_amd64.tar.gz Debian.tar.gz
-
-echo "Enter root password to load nfs kernel modules"
-sudo su
-
-modprobe nfs
-modprobe nfsd
-modprobe nfsv3
-
-exit
+tar -xzvf voyage-0.11.0_amd64.tar.gz -C ./voyage
+rm voyage-0.11.0_amd64.tar.gz Debian.tar.gz
