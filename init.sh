@@ -14,6 +14,17 @@ ipvalid() {
   return 0
 }
 
+if [ -n "$NFS_SRV_IP" ]; then
+	echo "Please provide NFS server ip as NFS_SRV_IP"
+	exit 1
+fi
+
+if if [ -n "$CLOUD_USER" ]; then
+	echo "Please provide 3mdeb cloud username as CLOUD_USER"
+	exit 1
+fi
+
+
 if ipvalid "$NFS_SRV_IP"; then
   echo "NFS server ip ($NFS_SRV_IP) is valid"
   exit 0
@@ -28,7 +39,7 @@ git clone git@github.com:miczyg1/netboot.git
 
 cd netboot
 
-sed -i "s/192.168.0.109/$NFS_SRV_IP/" > ./debian-installer/i386/boot-screens/menu.cfg
+sed -i "s/192.168.0.109/$NFS_SRV_IP/"  ./debian-installer/i386/boot-screens/menu.cfg
  
 wget http://ftp.debian.org/debian/dists/wheezy/main/installer-i386/current/images/netboot/netboot.tar.gz
 
@@ -58,3 +69,5 @@ sudo su
 modprobe nfs
 modprobe nfsd
 modprobe nfsv3
+
+exit
