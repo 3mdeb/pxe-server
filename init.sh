@@ -1,12 +1,32 @@
-#!/bin/bash
+# Usage:
+# USER=<cloud-username> ./init.sh
 
-: ${NETBOOT_DIR:=../netboot}
+git clone git@github.com:miczyg1/netboot.git
 
-docker build -t 3mdeb/pxe-server .
+cd netboot
 
-if [ $? -ne 0 ]; then
-    echo "ERROR: Unable to build container"
-    exit 1
-fi
 
-docker run -p 0.0.0.0:69:69/udp -v ${PWD}/${NETBOOT_DIR}:/srv/tftp -t -i 3mdeb/pxe-server
+wget http://ftp.debian.org/debian/dists/wheezy/main/installer-i386/current/images/netboot/netboot.tar.gz
+
+tar -kxzvf netboot.tar.gz -C . --skip-old-files
+
+wget --user=$USER --ask-password https://cloud.3mdeb.com/remote.php/webdav/projects/pcengines/OSimages/kernels.tar.gz
+
+tar -xzvf kernels.tar.gz
+
+rm  netboot.tar.gz kernels.tar.gz
+
+cd ..
+
+wget --user=$USER --ask-password https://cloud.3mdeb.com/remote.php/webdav/projects/pcengines/OSimages/Debian.tar.gz
+
+mkdir debian
+tar -xvpzf Debian.tar.gz -C ./debian --numeric-owner
+
+mkdir voyage
+
+wget --sure=$USER --ask-password https://cloud.3mdeb.com/remote.php/webdav/projects/pcengines/OSimages/voyage-0.11.0_amd64.tar.gz
+
+tar -xzvf voyage-0.11.0_amd64.tar.gz -C ./voyage
+
+rm voyage-0.11.0_amd64.tar.gz Debian.tar.gz
