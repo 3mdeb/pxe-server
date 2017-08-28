@@ -35,7 +35,7 @@ fi
 
 
 
-git clone git@github.com:miczyg1/netboot.git
+git clone git@github.com:3mdeb/netboot.git
 
 cd netboot
 
