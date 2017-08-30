@@ -35,7 +35,7 @@ sed -i "s/192.168.0.109/$NFS_SRV_IP/"  ./debian-installer/i386/boot-screens/menu
  
 wget http://ftp.debian.org/debian/dists/wheezy/main/installer-i386/current/images/netboot/netboot.tar.gz
 
-tar -kxzvf netboot.tar.gz -C . --skip-old-files && rm  netboot.tar.gz
+tar -xzvf netboot.tar.gz -C . --skip-old-files && rm  netboot.tar.gz
 
 wget https://cloud.3mdeb.com/index.php/s/rAeHunCKaC1F7H9/download -O kernels.tar.gz
 
