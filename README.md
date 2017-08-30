@@ -12,7 +12,7 @@ Usage
 ```
 git clone https://github.com/3mdeb/pxe-server.git
 cd pxe-server
-CLOUD_USER=<cloud-username> NFS_SRV_IP=<server-ip> ./init.sh
+NFS_SRV_IP=<server-ip> ./init.sh
 ```
 
 APU2 development and testing
