@@ -27,8 +27,6 @@ else
   exit 1
 fi
 
-
-
 git clone git@github.com:3mdeb/netboot.git
 
 cd netboot

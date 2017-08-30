@@ -19,11 +19,13 @@ APU2 development and testing
 ----------------------------
 
 ## Prepare iPXE
+
 `init.sh` script used above initializes directories, downloads PXE from Debian
 netboot, voyage netinst image and Debian 8 Jessie rootfs. It also clones the
 3mdeb netboot [repo](https://github.com/3mdeb/netboot.git)
 
 It is necessary to load nfs kernel modules before building a container:
+
 ```
 modprobe nfs
 modprobe nfsd
