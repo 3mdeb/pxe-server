@@ -10,7 +10,7 @@ if [ $? -ne 0 ]; then
 fi
 
 
-docker run --name pxeserver --privileged \
+docker run --rm --name pxeserver --privileged \
 	 -p 111:111/tcp -p 69:69/udp -p 2049:2049/tcp \
 	 -p 627:627/tcp -p 627:627/udp -p 875:875/tcp -p 875:875/udp \
 	 -p 892:892/tcp -p 892:892/udp -p 111:111/udp -p 2049:2049/udp \
