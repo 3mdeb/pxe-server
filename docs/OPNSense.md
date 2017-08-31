@@ -8,7 +8,7 @@ you need to do the following:
    https://opnsense.org/opnsense-17-7-released/
    
    You should also check the SHA256 hash:
-   `sha256 OPNsense-17.7-OpenSSL-serial-amd64.img.bz2`
+   `sha256 -c bc8b529accab5609aafaac04504cae48cbb69eb2320b72eadb9c3a1f1b0d4832 OPNsense-17.7-OpenSSL-serial-amd64.img.bz2`
    and compare it to the one in http://opnsense.mirrorhost.pw/releases/17.7/OPNsense-17.7-OpenSSL-checksums-amd64.sha256
 
 2. Extract the ISO contents to a directory called
