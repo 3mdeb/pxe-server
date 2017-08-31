@@ -1,4 +1,4 @@
-In order to boot PfSense via PXE and use unattended install,
+In order to boot PfSense via PXE,
 you need to do the following:
 
 1. Download ISO from https://nyifiles.pfsense.org/mirror/downloads/pfSense-CE-2.3.4-RELEASE-amd64.iso.gz
