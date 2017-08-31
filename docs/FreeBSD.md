@@ -2,7 +2,17 @@ In order to boot FreeBSD via PXE and use unattended install,
 you need the following:
 
 1. Extracted FreeBSD installation ISO exported via NFS.
-
+   You can download https://download.freebsd.org/ftp/releases/amd64/amd64/ISO-IMAGES/11.1/FreeBSD-11.1-RELEASE-amd64-memstick.img
+   To verify its SHA512:
+   Download https://download.freebsd.org/ftp/releases/amd64/amd64/ISO-IMAGES/11.1/CHECKSUM.SHA512-FreeBSD-11.1-RELEASE-amd64
+   Run:
+   `sha512 -c f42b04c4db7b783bfb5758e5f32ebba2db2bd2d8f57e1153dd29ea71f3d758e9995c89017e2c230291b7a93d4d7b434a5c3d6a9e685431170707c146de2b4284 FreeBSD-11.1-RELEASE-amd64-memstick.img`
+   
+   To mount the image, run (example from FreeBSD):
+   `mount /dev/$(mdconfig -a -t vnode -f FreeBSD-11.1-RELEASE-amd64-memstick.img)p3 /mnt`
+   
+   Next, run:
+   `rsync -avvP /mnt/ /srv/tftp/images/freebsd/`
 2. Relevant entry in DHCP server config:
   `option root-path "/srv/tftp/images/freebsd";`
   `/srv/tftp/images/freebsd` is the path to the extracted ISO.
