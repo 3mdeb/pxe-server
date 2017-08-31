@@ -44,12 +44,12 @@ Install OpenBSD over PXE
 
   ```
   label open-bsd
-  	menu label ^OpenBSD-5.9
+  	menu label ^OpenBSD-6.1
   	menu default
   	kernel OpenBSD/amd64/pxeboot.0
   ```
   
-  Note that it has to be in  tftpd root directory, not the directory where bsd
+  Note that it has to be in tftpd root directory, not the directory where bsd
   files are!
   
 3. Boot configuration.
