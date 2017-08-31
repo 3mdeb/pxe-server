@@ -2,6 +2,10 @@ In order to boot PfSense via PXE,
 you need to do the following:
 
 1. Download ISO from https://nyifiles.pfsense.org/mirror/downloads/pfSense-CE-2.3.4-RELEASE-amd64.iso.gz
+   
+   You should also check the SHA256 hash:
+   `sha256 -c 610b2a8c696e1d1854845d553ce8540debaab9d78ed6c15ce83872eaeac9d05f pfSense-CE-2.3.4-RELEASE-amd64.iso.gz`
+   and compare it to the one in https://nyifiles.pfsense.org/mirror/downloads/pfSense-CE-2.3.4-RELEASE-amd64.iso.gz.sha256
 
 2. Extract the ISO contents to a directory called
     `images/pfsense` in TFTP root:
