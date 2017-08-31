@@ -9,7 +9,7 @@ you need to do the following:
     
    In order to extract the contents, you need to mount
    the ISO with following commands (example from FreeBSD):
-   `mount /dev/$(mdconfig -a -t vnode -f pfSense-CE-2.3.4-RELEASE-amd64.iso) /mnt`
+   `mount_cd9660 /dev/$(mdconfig -a -t vnode -f pfSense-CE-2.3.4-RELEASE-amd64.iso) /mnt`
    Then:
    `rsync -avvP /mnt/ /srv/tftp/images/pfsense/`
    You need to have `rsync` installed.
