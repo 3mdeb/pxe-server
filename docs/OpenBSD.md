@@ -14,7 +14,15 @@ Install OpenBSD over PXE
   ```
   wget http://ftp.icm.edu.pl/pub/OpenBSD/6.1/amd64/bsd.rd
   wget http://ftp.icm.edu.pl/pub/OpenBSD/6.1/amd64/pxeboot
+  wget http://ftp.icm.edu.pl/pub/OpenBSD/6.1/amd64/SHA256
+  wget http://ftp.icm.edu.pl/pub/OpenBSD/6.1/amd64/SHA256.sig
   ```
+  You can verify the signature using `signify`(1):
+  `signify -C -p /etc/signify/openbsd-61-base.pub -x SHA256.sig`
+  You can also verify the SHA256 hash:
+  `sha256 -c f9c2ca96c7fb93d343b4e70ce55ff09fc927f1a0664597170ef408c5a1f398c0 pxeboot`
+  `sha256 -c 257270c76ecd9bcbf2b2093db1ad04483e85909a6207e3c769be176d3c489e7b bsd.rd`
+  
   By default, those files should be placed directly in tftp server root
   directory. In our case it's `netboot` directory, which is mounted inside
   container at `/srv/tftp`. They can be also placed in different paths, such as
@@ -52,6 +60,15 @@ Install OpenBSD over PXE
   Note that it has to be in tftpd root directory, not the directory where bsd
   files are!
   
+  If you don't want to use DHCP, you can use the following commands in iPXE:
+  ```
+  iPXE> ifopen net0
+  iPXE> set net0/ip 192.168.0.100
+  iPXE> set net0/netmask 255.255.255.0
+  iPXE> set net0/gateway 192.168.0.1  
+  iPXE> chain tftp://192.168.0.1/auto_install
+  ```
+  You need to adjust IP's and netmask to your own environment.
 3. Boot configuration.
 
   OpenBSD bootloader by default loads `bsd` file, so rename `bsd.rd` to `bsd`.
