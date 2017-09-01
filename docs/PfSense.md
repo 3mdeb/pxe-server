@@ -36,3 +36,5 @@ The path `images/pfsense/boot/pxeboot` is relative to TFTP root directory.
 It's a path to the PXE loader in the extracted PfSense installation image.
 
 Unfortunately, there's no mechanism for unattended installation of PfSense.
+PfSense documentation doesn't mention this:
+https://doc.pfsense.org/index.php/Installing_pfSense
