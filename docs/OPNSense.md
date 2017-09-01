@@ -1,4 +1,4 @@
-In order to boot OPNSense via PXE,
+In order to boot OPNSense via iPXE,
 you need to do the following:
 
 1. Download ISO from http://opnsense.mirrorhost.pw/releases/17.7/OPNsense-17.7-OpenSSL-serial-amd64.img.bz2
@@ -18,6 +18,10 @@ you need to do the following:
    In order to extract the contents, you need to mount
    the ISO with following commands (example from FreeBSD):
    `mount /dev/$(mdconfig -a -t vnode -f OPNsense-17.7-OpenSSL-serial-amd64.img)a /mnt`
+   
+   To mount the ISO from GNU / Linux use:
+   `mount -o loop pfSense-CE-2.3.4-RELEASE-amd64.iso /mnt`
+
    Then:
    `rsync -avvP /mnt/ /srv/tftp/images/opnsense/`
    You need to have `rsync` installed.
@@ -30,10 +34,11 @@ you need to do the following:
 ```
 label OPNSense
  menu label OPNSense
- pxe images/OPNSense/boot/pxeboot
+ pxe images/opnsense/boot/pxeboot
 ```
 
 The path `images/pfsense/boot/OPNSense` is relative to TFTP root directory.
 It's a path to the PXE loader in the extracted OPNSense installation image.
 
-Unfortunately, there's no mechanism for unattended installation of OPNSense.
+Unfortunately, there's no mechanism for unattended installation of OPNSense:
+https://github.com/opnsense/core/issues/18
