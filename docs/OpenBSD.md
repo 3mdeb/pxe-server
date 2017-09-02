@@ -87,20 +87,24 @@ Install OpenBSD over PXE
 
 5. In order to use Autoinstall mode, a few more adjustments need to be made.
 
-The binary you set to load in "filename" directive in DHCP server needs to be
-a symlink called `auto_install` pointing to `pxeboot.0`. Example:
+The binary you set to load in "filename" directive in DHCP server needs to
+point to `pxeboot`. Example:
 
 ```
 subnet 192.168.0.0 netmask 255.255.255.0 {
         option routers 192.168.0.1;
         range 192.168.0.4 192.168.0.254;
-        filename "auto_install";
+        filename "pxeboot";
 ```        
-
-Otherwise, you're going to be asked whether you want to install or upgrade.
-
+You will be asked after booting:
+```
+Could not determine auto mode.
+Response file location? [http://192.168.1.1/install.conf]
 The configuration file for installation is served by HTTP server passed by
 `server-name`, `option tftp-server-name`, or `next-server` directive.
+```
+
+If the location is true, press Enter.
 The file needs to be named `install.conf`. Here's an example:
 ```
 System hostname = 3mdeb.dev
@@ -116,6 +120,8 @@ Location of sets = http
 Server = mirror.leaseweb.com
 Use Whole disk MBR, whole disk GPT, OpenBSD area or Edit = W
 ```
+
+You need to place it in HTTP root.
 
 You need to connect APU to the em0 Ethernet port (the nearest port to the RS232
 plug) and provide apriopriate routing and DNS resolver.
