@@ -51,7 +51,7 @@ Boot to iPXE and type:
 iPXE> ifconf net0
 iPXE> dhcp net0
 iPXE> set filename pxelinux.0
-iPXE> set next-server 192.168.0.106
+iPXE> set next-server <tftpboot-server-ip>
 iPXE> chain tftp://${next-server}/${filename}
 ```
 
