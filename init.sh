@@ -1,6 +1,6 @@
 #!/bin/bash
 # Usage:
-# CLOUD_USER=<cloud-username> NFS_SRV_IP=<server-ip> ./init.sh
+# NFS_SRV_IP=<server-ip> ./init.sh
 
 ipvalid() {
   # Set up local variables
@@ -20,20 +20,12 @@ if [ -z "$NFS_SRV_IP" ]; then
 	exit 1
 fi
 
-if [ -z "$CLOUD_USER" ]; then
-	echo "Please provide 3mdeb cloud username as CLOUD_USER"
-	exit 1
-fi
-
-
 if ipvalid "$NFS_SRV_IP"; then
   echo "NFS server ip ($NFS_SRV_IP) is valid"
 else
   echo "Wrong server ip address ($NFS_SRV_IP)"
   exit 1
 fi
-
-
 
 git clone git@github.com:3mdeb/netboot.git
 
@@ -43,23 +35,21 @@ sed -i "s/192.168.0.109/$NFS_SRV_IP/"  ./debian-installer/i386/boot-screens/menu
  
 wget http://ftp.debian.org/debian/dists/wheezy/main/installer-i386/current/images/netboot/netboot.tar.gz
 
-tar -kxzvf netboot.tar.gz -C . --skip-old-files && rm  netboot.tar.gz
+tar -xzvf netboot.tar.gz -C . --skip-old-files && rm  netboot.tar.gz
 
-echo "Enter 3mdeb cloud user password"
-wget --user=$CLOUD_USER --ask-password https://cloud.3mdeb.com/remote.php/webdav/projects/pcengines/OSimages/kernels.tar.gz
+wget https://cloud.3mdeb.com/index.php/s/pHIz1Ir9m68Bjq3/download -O kernels.tar.gz
 
 tar -xzvf kernels.tar.gz && rm kernels.tar.gz
 
 cd ..
-echo "Enter 3mdeb cloud user password"
-wget --user=$CLOUD_USER --ask-password https://cloud.3mdeb.com/remote.php/webdav/projects/pcengines/OSimages/Debian.tar.gz
+wget https://cloud.3mdeb.com/index.php/s/7m5dDKW8eGG4AoJ/download -O debian-stretch.tar.gz
 
 mkdir debian
-tar -xvpzf Debian.tar.gz -C ./debian --numeric-owner 
+tar -xvpzf debian-stretch.tar.gz -C ./debian --numeric-owner 
 
 mkdir voyage
-echo "Enter 3mdeb cloud user password"
-wget --user=$CLOUD_USER --ask-password https://cloud.3mdeb.com/remote.php/webdav/projects/pcengines/OSimages/voyage-0.11.0_amd64.tar.gz
+wget https://cloud.3mdeb.com/index.php/s/rUZPwRHOjxpSxN4/download -O voyage-0.11.0_amd64.tar.gz
 
 tar -xzvf voyage-0.11.0_amd64.tar.gz -C ./voyage
-rm voyage-0.11.0_amd64.tar.gz Debian.tar.gz
+rm voyage-0.11.0_amd64.tar.gz 
+rm debian-stretch.tar.gz
