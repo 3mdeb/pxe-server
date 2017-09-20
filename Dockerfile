@@ -1,4 +1,4 @@
-FROM ubuntu:xenial
+FROM debian:jessie
 
 MAINTAINER Piotr Król <piotr.krol@3mdeb.com>
 
