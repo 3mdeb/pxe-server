@@ -6,31 +6,41 @@ developing operating systems and firmware for PXE-capable platforms.
 
 It was inspired by effort required to test PC Engines apu2 platform.
 
-`./init.sh` builds container and runs it exposing port 69. There is silent
-assumption that your host doesn't have port 69 in use.
 
 Usage
 -----
 
 ```
 git clone https://github.com/3mdeb/pxe-server.git
-./init.sh
+cd pxe-server
+NFS_SRV_IP=<host-pc-ip> ./init.sh
 ```
+
+`init.sh` downloads all necessary files, OS images, PXE and extracts them in
+proper directories.
+
+> `init.sh` script uses our netboot repository by default. It is the repository it
+> should be paired with.
 
 APU2 development and testing
 ----------------------------
 
-## Prepare iPXE
+### Setting up docker container
 
-For those who want to test apu2 I advise to use [3mdeb/netboot](https://github.com/3mdeb/netboot) configuration.
-After finished `init.sh` as described above. Run:
+In order to set up isolated environment for pxe-server with nfs-server and
+tftp-boot, just run:
 
 ```
-git clone https://github.com/3mdeb/netboot.git
-NETBOOT_DIR=./netboot ./init.sh
+./start.sh
 ```
 
-## Booting iPXE on recent firmware
+This script builds a container and runs it with correct configuration of tftpd
+and nfs-kernel-server.
+
+`run.sh` is a script that runs at container startup, do not use it on Your host
+PC.
+
+### Booting iPXE on recent firmware
 
 This instruction assume you do not provide information about TFTP server over
 DHCP.
@@ -41,10 +51,42 @@ Boot to iPXE and type:
 iPXE> ifconf net0
 iPXE> dhcp net0
 iPXE> set filename pxelinux.0
-iPXE> set next-server 192.168.0.106
+iPXE> set next-server <tftpboot-server-ip>
 iPXE> chain tftp://${next-server}/${filename}
 ```
 
+### Select options
+
+Currently supported options are:
+
+1. `Debian-netboot` - it is a Debian Stretch rootfs served over nfs with custom
+kernel
+2. `Voyage-netinst` - a Voyage Linux network installation image
+3. Debian `Install` - runs a Debian i386 network installation
+
+The credentials for Debian Stretch are as follows:
+login: root
+password: root
+
 ## Robot Framework
 
-Some automation of above process was mage. Relevant source code can be found [here](https://github.com/pcengines/apu-test-suite)>
+Some automation of above process has been prepared. Relevant source code can be found [here](https://github.com/pcengines/apu-test-suite)
+
+
+## Issues
+
+I have encountered issues with network interface configuration. The
+configuration is retrieved from DHCP 3 times:
+
+1. In iPXEshell
+2. Before nfs mount during boot time
+3. At system startup (defined in /etc/network/interfaces)
+
+> 1 and 2 are necessary, 3 is only needed to get internet connection on booted
+system.
+
+Requesting configuration that many times makes a little mess, so as a temporary
+workaround add a static IP for the `net0/eth0` interface on Your DHCP server.
+The IP address requested will remain the same and so the problems will be gone
+too.
+
