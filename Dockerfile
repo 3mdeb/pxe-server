@@ -11,13 +11,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   python-dev \
   ntpdate \
   ca-certificates \
-  tftpd-hpa \
   nfs-kernel-server \
   nfs-common \
   netbase \
   udhcpd 
 
 RUN mkdir -p /srv/nfs
+RUN mkdir -p /srv/http
 
 VOLUME /srv/nfs
 

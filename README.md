@@ -70,8 +70,32 @@ password: root
 
 ## Robot Framework
 
-Some automation of above process has been prepared. Relevant source code can be found [here](https://github.com/pcengines/apu-test-suite)
+Some automation of above process has been prepared. Relevant source code can be
+found [here](https://github.com/pcengines/apu-test-suite)
 
+## Chainloading over HTTP
+
+In some situation it may happen that TFTP server may be unreliable. There are
+known network configurations where routers filter tftp traffic. Simple
+workaround for that can be, instead of using above mentioned tftp server, try
+to use HTTP.
+
+Below example show how to netboot Debian installed with
+`NFS_SRV_IP=<host-pc-ip> ./init.sh` command.
+
+Go to `pxe-server` directory and run HTTP server:
+
+```
+python3 -m http.server
+```
+
+Boot to iPXE and type:
+
+```
+iPXE> ifconf net0
+iPXE> dhcp net0
+iPXE> chain http://${next-server}:8000/debian-netboot.ipxe
+```
 
 ## Issues
 

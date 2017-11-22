@@ -2,6 +2,7 @@
 set -e
 
 export_base="/srv/nfs/"
+HTTP_SRV="/srv/http/"
 
 ### Handle `docker stop` for graceful shutdown
 function shutdown {
@@ -41,7 +42,5 @@ exportfs -ra
 service nfs-kernel-server start
 
 echo "- Nfs server is up and running.."
-# configure tftp
-sed -i 's/TFTP_DIRECTORY=\"\/var\/lib\/tftpboot\"/TFTP_DIRECTORY=\"\/srv\/tftp\"/' /etc/default/tftpd-hpa
-sed -i 's/secure/secure -c/' /etc/default/tftpd-hpa
-/etc/init.d/tftpd-hpa start
+cd $HTTP_SRV
+python -m SimpleHTTPServer 8000
