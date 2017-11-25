@@ -22,6 +22,10 @@ proper directories.
 > `init.sh` script uses our netboot repository by default. It is the repository it
 > should be paired with.
 
+Please note that `init.sh` also download prepared Debian boot images. In root
+directory of those images you can find `CHANGELOG` document which briefly
+describe modifications.
+
 APU2 development and testing
 ----------------------------
 
