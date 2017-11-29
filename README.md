@@ -55,8 +55,11 @@ Boot to iPXE and type:
 ```
 iPXE> ifconf net0
 iPXE> dhcp net0
-iPXE> chain http://${next-server}:8000/menu.ipxe
+iPXE> chain http://<http-server-ip>:8000/menu.ipxe
 ```
+
+Of course please replace `<http-server-ip>` with address provided during
+initialization (`NFS_SRV_IP`).
 
 ### Select options
 
@@ -68,9 +71,17 @@ kernel
 3. `Debian stable netinst` - runs a Debian stable amd64 network installation from external repository
 4. `Debian testing netinst` - runs a Debian testing amd64 network installation from external repository
 
-The credentials for Debian Stretch are as follows:
+The credentials for Debian stable netboot are as follows:
 login: root
-password: root
+password: debian
+
+Those credentials are visible during boot:
+
+```
+Debian GNU/Linux 9 apu2 ttyS0 [root:debian]
+
+apu2 login: 
+```
 
 ## Robot Framework
 
