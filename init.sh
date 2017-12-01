@@ -27,29 +27,25 @@ else
   exit 1
 fi
 
-git clone git@github.com:3mdeb/netboot.git
+git clone https://github.com/3mdeb/netboot.git
 
 cd netboot
 
-sed -i "s/192.168.0.109/$NFS_SRV_IP/"  ./debian-installer/i386/boot-screens/menu.cfg
- 
-wget http://ftp.debian.org/debian/dists/wheezy/main/installer-i386/current/images/netboot/netboot.tar.gz
-
-tar -xzvf netboot.tar.gz -C . --skip-old-files && rm  netboot.tar.gz
+sed -i "s/replace_with_ip/$NFS_SRV_IP/g"  ./menu.ipxe
 
 wget https://cloud.3mdeb.com/index.php/s/pHIz1Ir9m68Bjq3/download -O kernels.tar.gz
 
 tar -xzvf kernels.tar.gz && rm kernels.tar.gz
 
 cd ..
-wget https://cloud.3mdeb.com/index.php/s/7m5dDKW8eGG4AoJ/download -O debian-stretch.tar.gz
+wget https://cloud.3mdeb.com/index.php/s/J4fD8wLcK5phIm3/download -O debian-stable.tar.gz
 
 mkdir debian
-tar -xvpzf debian-stretch.tar.gz -C ./debian --numeric-owner 
+tar -xvpzf debian-stable.tar.gz -C ./debian --numeric-owner
 
 mkdir voyage
 wget https://cloud.3mdeb.com/index.php/s/rUZPwRHOjxpSxN4/download -O voyage-0.11.0_amd64.tar.gz
 
 tar -xzvf voyage-0.11.0_amd64.tar.gz -C ./voyage
 rm voyage-0.11.0_amd64.tar.gz 
-rm debian-stretch.tar.gz
+rm debian-stable.tar.gz
