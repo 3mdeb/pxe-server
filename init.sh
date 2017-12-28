@@ -33,15 +33,17 @@ cd netboot
 
 sed -i "s/replace_with_ip/$NFS_SRV_IP/g"  ./menu.ipxe
 
-wget https://cloud.3mdeb.com/index.php/s/pHIz1Ir9m68Bjq3/download -O kernels.tar.gz
+wget https://cloud.3mdeb.com/index.php/s/Tf2JGfLIIz861YF/download -O kernels.tar.gz
 
 tar -xzvf kernels.tar.gz && rm kernels.tar.gz
 
 cd ..
-wget https://cloud.3mdeb.com/index.php/s/J4fD8wLcK5phIm3/download -O debian-stable.tar.gz
+wget https://cloud.3mdeb.com/index.php/s/Fe2Wwi7VSaXU0gU/download -O debian-stable.tar.gz
+wget https://cloud.3mdeb.com/index.php/s/qXkhj7Q44cc92AV/download -O xen.tar.gz
 
 mkdir debian
 tar -xvpzf debian-stable.tar.gz -C ./debian --numeric-owner
+tar -xvpzf xen.tar.gz -C ./debian --numeric-owner
 
 mkdir voyage
 wget https://cloud.3mdeb.com/index.php/s/rUZPwRHOjxpSxN4/download -O voyage-0.11.0_amd64.tar.gz

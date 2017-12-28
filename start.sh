@@ -9,6 +9,8 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+sudo service nfs-kernel-server stop
+sudo service rpcbind srop
 
 docker run --rm --name pxeserver --privileged \
 	 -p 111:111/tcp -p 2049:2049/tcp -p 8000:8000/tcp \
