@@ -51,3 +51,4 @@ wget https://cloud.3mdeb.com/index.php/s/rUZPwRHOjxpSxN4/download -O voyage-0.11
 tar -xzvf voyage-0.11.0_amd64.tar.gz -C ./voyage
 rm voyage-0.11.0_amd64.tar.gz 
 rm debian-stable.tar.gz
+rm xen.tar.gz
