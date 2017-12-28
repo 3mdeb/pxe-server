@@ -29,15 +29,12 @@ fi
 
 git clone https://github.com/3mdeb/netboot.git
 
-cd netboot
+sed -i "s/replace_with_ip/$NFS_SRV_IP/g"  ./netboot/menu.ipxe
 
-sed -i "s/replace_with_ip/$NFS_SRV_IP/g"  ./menu.ipxe
+wget https://cloud.3mdeb.com/index.php/s/IoLyCrPtzj43Pc4/download -O kernels.tar.gz
 
-wget https://cloud.3mdeb.com/index.php/s/Tf2JGfLIIz861YF/download -O kernels.tar.gz
+tar -xzvf kernels.tar.gz -C ./netboot && rm kernels.tar.gz
 
-tar -xzvf kernels.tar.gz && rm kernels.tar.gz
-
-cd ..
 wget https://cloud.3mdeb.com/index.php/s/Fe2Wwi7VSaXU0gU/download -O debian-stable.tar.gz
 wget https://cloud.3mdeb.com/index.php/s/qXkhj7Q44cc92AV/download -O xen.tar.gz
 
