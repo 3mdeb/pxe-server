@@ -31,7 +31,7 @@ git clone https://github.com/3mdeb/netboot.git
 
 sed -i "s/replace_with_ip/$NFS_SRV_IP/g"  ./netboot/menu.ipxe
 
-wget https://cloud.3mdeb.com/index.php/s/uUciJwsA7B2KxSi/download -O kernels.tar.gz
+wget https://cloud.3mdeb.com/index.php/s/zYdqxiFgWIpVIfj/download -O kernels.tar.gz
 
 tar -xzvf kernels.tar.gz -C ./netboot && rm kernels.tar.gz
 
