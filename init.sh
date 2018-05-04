@@ -36,7 +36,7 @@ wget https://cloud.3mdeb.com/index.php/s/uUciJwsA7B2KxSi/download -O kernels.tar
 tar -xzvf kernels.tar.gz -C ./netboot && rm kernels.tar.gz
 
 wget https://cloud.3mdeb.com/index.php/s/nV7za1cPtVGeERH/download -O debian-stable.tar.gz
-wget https://cloud.3mdeb.com/index.php/s/qXkhj7Q44cc92AV/download -O xen.tar.gz
+wget https://cloud.3mdeb.com/index.php/s/4WoGibldfRYqR4Z/download -O xen.tar.gz
 
 mkdir debian
 tar -xvpzf debian-stable.tar.gz -C ./debian --numeric-owner
