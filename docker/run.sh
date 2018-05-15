@@ -30,7 +30,7 @@ for export in "${exports[@]}"; do
 done
 
 echo -e "\n- Initializing nfs server.."
-mkdir /run/sendsigs.omit.d
+mkdir -p /run/sendsigs.omit.d
 rpcbind -i
 # set static port to avoid using random ports by nfs
 rpc.statd --no-notify --port 32765 --outgoing-port 32766
