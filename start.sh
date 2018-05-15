@@ -2,8 +2,6 @@
 
 set -e
 
-docker build -t 3mdeb/pxe-server ./docker
-
 if [ $? -ne 0 ]; then
     echo "ERROR: Unable to build container"
     exit 1
