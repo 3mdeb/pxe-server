@@ -18,6 +18,7 @@ trap "shutdown" SIGTERM
 echo "Export points:"
 echo "/srv/nfs *(rw,sync,fsid=0,no_subtree_check,no_root_squash)" | tee /etc/exports
 echo "/srv/nfs/debian *(rw,sync,no_subtree_check,no_root_squash)" | tee -a /etc/exports
+echo "/srv/nfs/xen *(rw,sync,no_subtree_check,no_root_squash)" | tee -a /etc/exports
 echo "/srv/nfs/voyage *(rw,sync,no_subtree_check,no_root_squash)" | tee -a /etc/exports
 
 read -a exports <<< "${@}"
