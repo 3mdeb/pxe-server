@@ -20,6 +20,7 @@ RUN mkdir -p /srv/nfs
 RUN mkdir -p /srv/http
 
 VOLUME /srv/nfs
+VOLUME /srv/http
 
 ADD run.sh /usr/local/bin/run.sh
 

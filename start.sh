@@ -22,8 +22,9 @@ docker run --rm --name pxeserver --privileged \
 	 -p 32766:32766/tcp -p 32766:32766/udp \
 	 -p 32767:32767/tcp -p 32767:32767/udp \
 	 -v ${PWD}/netboot:/srv/http \
-	 -v ${PWD}/debian:/srv/nfs/debian \
+	 -v ${PWD}/debian/debian-stable:/srv/nfs/debian \
 	 -v ${PWD}/voyage:/srv/nfs/voyage \
+	 -v ${PWD}/xen:/srv/nfs/xen \
 	 -t -i 3mdeb/pxe-server /bin/bash -c \
 	 "bash /usr/local/bin/run.sh"
 
