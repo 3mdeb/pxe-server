@@ -31,12 +31,13 @@ git clone https://github.com/3mdeb/netboot.git
 
 sed -i "s/replace_with_ip/$NFS_SRV_IP/g"  ./netboot/menu.ipxe
 
-wget https://cloud.3mdeb.com/index.php/s/zYdqxiFgWIpVIfj/download -O kernels.tar.gz
+wget https://cloud.3mdeb.com/index.php/s/UQQVYrNIhg7ddwj/download -O kernels.tar.gz
 
 tar -xzvf kernels.tar.gz -C ./netboot && rm kernels.tar.gz
 
-wget https://cloud.3mdeb.com/index.php/s/nV7za1cPtVGeERH/download -O debian-stable.tar.gz
-wget https://cloud.3mdeb.com/index.php/s/4WoGibldfRYqR4Z/download -O xen.tar.gz
+wget https://cloud.3mdeb.com/index.php/s/9b8h6WmJcNsuB57/download -O debian-stable.tar.gz
+wget https://cloud.3mdeb.com/index.php/s/fzQ2FaRTdMvzXqO/download -O xen.tar.gz
+wget https://cloud.3mdeb.com/index.php/s/AQuUdsYkBzO9UJz/download -O core.tar.gz
 
 mkdir debian
 tar -xvpzf debian-stable.tar.gz -C ./debian --numeric-owner
@@ -45,7 +46,10 @@ tar -xvpzf xen.tar.gz -C ./debian --numeric-owner
 mkdir voyage
 wget https://cloud.3mdeb.com/index.php/s/rUZPwRHOjxpSxN4/download -O voyage-0.11.0_amd64.tar.gz
 
+tar -xvpzf core.tar.gz -C ./netboot
+
 tar -xzvf voyage-0.11.0_amd64.tar.gz -C ./voyage
 rm voyage-0.11.0_amd64.tar.gz 
 rm debian-stable.tar.gz
 rm xen.tar.gz
+rm core.tar.gz
