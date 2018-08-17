@@ -1,3 +1,2 @@
-debian
-voyage
-netboot
+ansible-venv
+pxe-server.retry
