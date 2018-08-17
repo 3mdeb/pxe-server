@@ -18,6 +18,7 @@ trap "shutdown" SIGTERM
 echo "Export points:"
 echo "/srv/nfs *(rw,sync,fsid=0,no_subtree_check,no_root_squash)" | tee /etc/exports
 echo "/srv/nfs/debian *(rw,sync,no_subtree_check,no_root_squash)" | tee -a /etc/exports
+echo "/srv/nfs/xen *(rw,sync,no_subtree_check,no_root_squash)" | tee -a /etc/exports
 echo "/srv/nfs/voyage *(rw,sync,no_subtree_check,no_root_squash)" | tee -a /etc/exports
 echo "/srv/nfs/xen *(rw,sync,no_subtree_check,no_root_squash)" | tee -a /etc/exports
 
@@ -31,7 +32,7 @@ for export in "${exports[@]}"; do
 done
 
 echo -e "\n- Initializing nfs server.."
-mkdir /run/sendsigs.omit.d
+mkdir -p /run/sendsigs.omit.d
 rpcbind -i
 # set static port to avoid using random ports by nfs
 rpc.statd --no-notify --port 32765 --outgoing-port 32766
