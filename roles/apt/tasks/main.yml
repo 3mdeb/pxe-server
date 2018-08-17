@@ -1,0 +1,37 @@
+- name: Remove cdrom repo
+  apt_repository:
+    repo: deb cdrom:[Debian GNU/Linux 9.4.0 _Stretch_ - Official amd64 xfce-CD Binary-1 20180310-11:21]/ stretch main
+    state: absent
+
+- name: Add trffic manager stable deb repo
+  apt_repository:
+    repo: deb http://debian-archive.trafficmanager.net/debian/ stable main contrib non-free
+    state: present
+
+- name: Add trffic manager stable deb-src repo
+  apt_repository:
+    repo: deb-src http://debian-archive.trafficmanager.net/debian/ stable main contrib non-free
+    state: present
+
+- name: Install apt-transport-https
+  apt:
+    name: apt-transport-https
+    state: present
+- name: Add Docker CE key to apt
+  apt_key:
+    url: https://download.docker.com/linux/debian/gpg
+    state: present
+
+- name: Add Docker repo
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/debian stretch stable
+    state: present
+
+- name: Install essential packages
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - docker-ce
+    - python-pip

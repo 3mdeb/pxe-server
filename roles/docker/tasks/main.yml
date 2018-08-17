@@ -1,0 +1,53 @@
+
+- name: Install docker-py
+  pip:
+    name: docker-py
+    state: absent
+
+- name: Install docker
+  pip:
+    name: docker
+
+- name: add default user to docker group
+  user:
+    name: debian
+    groups: docker
+    append: yes
+
+- name: Start 3mdeb/pxe-server Docker container
+  docker_container:
+    name: pxe-server
+    state: started
+    image: 3mdeb/pxe-server:latest
+    pull: yes
+    command: bash /usr/local/bin/run.sh
+    restart: yes
+    restart_policy: always
+    privileged: yes
+    published_ports:
+      - "111:111/tcp"
+      - "2049:2049/tcp"
+      - "8000:8000/tcp"
+      - "627:627/tcp"
+      - "627:627/udp"
+      - "875:875/tcp"
+      - "875:875/udp"
+      - "892:892/tcp"
+      - "892:892/udp"
+      - "111:111/udp"
+      - "2049:2049/udp"
+      - "10053:10053/udp"
+      - "10053:10053/tcp"
+      - "32769:32769/tcp"
+      - "32769:32769/udp"
+      - "32765:32765/tcp"
+      - "32765:32765/udp"
+      - "32766:32766/tcp"
+      - "32766:32766/udp"
+      - "32767:32767/tcp"
+      - "32767:32767/udp"
+    volumes:
+      - /var/netboot:/srv/http
+      - /var/debian-stable:/srv/nfs/debian
+      - /var/xen:/srv/nfs/xen
+      - /var/voyage:/srv/nfs/voyage

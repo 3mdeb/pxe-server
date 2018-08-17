@@ -1,0 +1,92 @@
+---
+- hosts: all
+  user: debian
+  become: yes
+  become_user: root
+  become_method: su
+  roles:
+    - debops.apt_preferences
+    - apt
+    - docker
+    - netboot
+
+  tasks:
+
+    - name: Get kernels
+      get_url:
+        url: https://cloud.3mdeb.com/index.php/s/UQQVYrNIhg7ddwj/download
+        dest: /tmp/kernels.tar.gz
+        checksum: sha256:59f6355e210452b4ab4c7a68ee2730860dfd9f15bb5db2b3666f157d26ae919c
+
+    - name: Get Debian rootfs
+      get_url:
+        url: https://cloud.3mdeb.com/index.php/s/9b8h6WmJcNsuB57/download
+        dest: /tmp/debian-stable.tar.gz
+        checksum: sha256:bb7fb5d9e23d6759458cf9e415fab7a5650112b7ede069633d9372e4e0443dcc
+
+    - name: Get Voyage
+      get_url:
+        url: https://cloud.3mdeb.com/index.php/s/rUZPwRHOjxpSxN4/download
+        dest: /tmp/voyage.tar.gz
+        checksum: sha256:86934186fde2cbc749b2e33d027977f1b3a0cf02f69c2ffc9446e620b3d6e5c6
+
+    - name: Get Core-6.4
+      get_url:
+        url: https://cloud.3mdeb.com/index.php/s/AQuUdsYkBzO9UJz/download
+        dest: /tmp/core.tar.gz
+        checksum: sha256:7fb624fe34b02b4df54c1e8c3b823b794441ef2b152480de7bb2c2b39f381be9
+
+    - name: Create /var/voyage
+      file:
+        path: /var/voyage
+        state: directory
+
+    - name: Unarchive kernels
+      unarchive:
+        src: /tmp/kernels.tar.gz
+        dest: /var/netboot
+        remote_src: yes
+        keep_newer: yes
+        group: debian
+        owner: debian
+
+    - name: Unarchive Debian rootfs
+      unarchive:
+        src: /tmp/debian-stable.tar.gz
+        dest: /var
+        remote_src: yes
+        keep_newer: yes
+        group: debian
+        owner: debian
+
+    - name: Unarchive Voyage
+      unarchive:
+        src: /tmp/voyage.tar.gz
+        dest: /var/voyage
+        remote_src: yes
+        keep_newer: yes
+        group: debian
+        owner: debian
+
+    - name: Unarchive Core
+      unarchive:
+        src: /tmp/core.tar.gz
+        dest: /var/netboot/
+        remote_src: yes
+        keep_newer: yes
+        group: debian
+        owner: debian
+
+    - name: Mount nfsd
+      mount:
+        path: /proc/fs/nfsd
+        src: nfsd
+        fstype: nfsd
+        state: present
+
+    - name: Restart server
+      command: /sbin/shutdown -r +1
+      async: 0
+      poll: 0
+      ignore_errors: true
+

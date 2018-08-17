@@ -1,20 +1,41 @@
 pxe-server
 ==========
 
-This repository contains PXE server that should help in installing, testing and
-developing operating systems and firmware for PXE-capable platforms.
+This repository contains PXE server (TFTP+NFS) that should help in installing,
+testing and developing operating systems and firmware for PXE-capable
+platforms.
 
 It was inspired by effort required to test PC Engines apu2 platform.
 
+We use PXE server without DHCP, what may cause problems to BSD systems and is
+subject of our further work on this project.
 
 Usage
 -----
 
+# pxe-server deployment
+
+## Ansible setup
+
 ```
-git clone https://github.com/3mdeb/pxe-server.git
-cd pxe-server
-NFS_SRV_IP=<host-pc-ip> ./init.sh
+virtualenv ansible-venv
+source ansible-venv/bin/activate
+pip install ansible
+ansible-galaxy install angstwad.docker_ubuntu
+ansible-galaxy install debops.apt_preferences
+ssh-keygen -f ~/.ssh/ansible
+ssh-add ~/.ssh/ansible
+ssh-copy-id -i ~/.ssh/ansible <user>@<target_host>
 ```
+
+## Initial deployment
+
+Following procedure assume deployment on clean Debian system:
+
+```
+ansible-playbook -i "<target_host>," -b --ask-become-pass pxe-server.yml
+```
+
 
 `init.sh` downloads all necessary files, OS images, PXE and extracts them in
 proper directories.
