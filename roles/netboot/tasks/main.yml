@@ -1,0 +1,15 @@
+- name: copy preseed.cfg
+  copy:
+    src: files/preseed.cfg
+    dest: /var/netboot/preseed.cfg
+
+- name: copy preseed_ubuntu.cfg
+  copy:
+    src: files/preseed_ubuntu.cfg
+    dest: /var/netboot/preseed_ubuntu.cfg
+
+- name: deploy menu.ipxe
+  template:
+    src: templates/menu.ipxe.j2
+    dest: /var/netboot/menu.ipxe
+
