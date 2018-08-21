@@ -13,3 +13,32 @@
     src: templates/menu.ipxe.j2
     dest: /var/netboot/menu.ipxe
 
+- name: create kernels directory
+  file:
+    path: /var/netboot/kernels
+    state: directory
+
+- name: create Xen dev symlink
+  file:
+    src: /var/netboot/kernels/xen-4.8-amd64
+    dest: /var/netboot/kernels/xen-dev
+    state: link
+    #TODO: remove force after adding xen kernel
+    force: yes
+
+- name: create Linux dev symlink
+  file:
+    src: /var/netboot/kernels/vmlinuz-4.14.y
+    dest: /var/netboot/kernels/vmlinuz-dev
+    state: link
+    #TODO: remove force after adding xen kernel
+    force: yes
+
+#Following kernels should be deployed to /var/netboot/kernels
+
+#TODO: obtain Xen kernel from debian - artifact of rootfs building
+#TODO: obtain Debian with 4.9.y - artifact of rootfs building
+#TODO: obtain Debian with 4.14.y - artifact of rootfs building
+
+#TODO: obtain Voyage Linux - have to be obtained from our cloud, since we do
+#not support extraction from ISO
