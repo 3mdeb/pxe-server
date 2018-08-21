@@ -5,6 +5,7 @@
   become_user: root
   become_method: su
   roles:
+    - common
     - debops.apt_preferences
     - apt
     - docker
