@@ -13,47 +13,51 @@
 
   tasks:
 
-    - name: Get kernels
-      get_url:
-        url: https://cloud.3mdeb.com/index.php/s/UQQVYrNIhg7ddwj/download
-        dest: /tmp/kernels.tar.gz
-        checksum: sha256:59f6355e210452b4ab4c7a68ee2730860dfd9f15bb5db2b3666f157d26ae919c
+    #TODO: we should rely on stable release available on cloud
+    - name: Copy Debian rootfs
+      copy:
+        src: /home/pietrushnic/storage/projects/2017/3mdeb/tmp/release-v1.0.0/rootfs-v1.0.0.tar.gz
+        dest: /tmp/rootfs-{{ release_version }}.tar.gz
 
-    - name: Get Debian rootfs
-      get_url:
-        url: https://cloud.3mdeb.com/index.php/s/9b8h6WmJcNsuB57/download
-        dest: /tmp/debian-stable.tar.gz
-        checksum: sha256:bb7fb5d9e23d6759458cf9e415fab7a5650112b7ede069633d9372e4e0443dcc
+    - name: Copy Linux 4.9.y
+      copy:
+        src: /home/pietrushnic/storage/projects/2017/3mdeb/tmp/release-v1.0.0/vmlinuz-4.9.122
+        dest: /var/netboot/kernels/vmlinuz-4.9.122
 
+    - name: Copy Linux 4.14.y
+      copy:
+        src: /home/pietrushnic/storage/projects/2017/3mdeb/tmp/release-v1.0.0/vmlinuz-4.14.65
+        dest: /var/netboot/kernels/vmlinuz-4.14.65
+
+    - name: create Linux 4.14.y
+      file:
+        src: /var/netboot/kernels/vmlinuz-4.14.65
+        dest: /var/netboot/kernels/vmlinuz-4.14.y
+        state: link
+
+    - name: create Linux 4.9.y
+      file:
+        src: /var/netboot/kernels/vmlinuz-4.9.122
+        dest: /var/netboot/kernels/vmlinuz-4.9.y
+        state: link
+
+    # TODO: because of iso_extract lack of support for directories,
+    # implementation of ISO extraction for Voyage would be to convolutes, we
+    # leaving it as it is
     - name: Get Voyage
       get_url:
         url: https://cloud.3mdeb.com/index.php/s/rUZPwRHOjxpSxN4/download
         dest: /tmp/voyage.tar.gz
         checksum: sha256:86934186fde2cbc749b2e33d027977f1b3a0cf02f69c2ffc9446e620b3d6e5c6
 
-    - name: Get Core-6.4
-      get_url:
-        url: https://cloud.3mdeb.com/index.php/s/AQuUdsYkBzO9UJz/download
-        dest: /tmp/core.tar.gz
-        checksum: sha256:7fb624fe34b02b4df54c1e8c3b823b794441ef2b152480de7bb2c2b39f381be9
-
     - name: Create /var/voyage
       file:
         path: /var/voyage
         state: directory
 
-    - name: Unarchive kernels
-      unarchive:
-        src: /tmp/kernels.tar.gz
-        dest: /var/netboot
-        remote_src: yes
-        keep_newer: yes
-        group: debian
-        owner: debian
-
     - name: Unarchive Debian rootfs
       unarchive:
-        src: /tmp/debian-stable.tar.gz
+        src: /tmp/rootfs-{{ release_version }}.tar.gz
         dest: /var
         remote_src: yes
         keep_newer: yes
@@ -64,15 +68,6 @@
       unarchive:
         src: /tmp/voyage.tar.gz
         dest: /var/voyage
-        remote_src: yes
-        keep_newer: yes
-        group: debian
-        owner: debian
-
-    - name: Unarchive Core
-      unarchive:
-        src: /tmp/core.tar.gz
-        dest: /var/netboot/
         remote_src: yes
         keep_newer: yes
         group: debian
