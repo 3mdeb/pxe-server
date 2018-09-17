@@ -36,6 +36,24 @@ Following procedure assume deployment on clean Debian as target system:
 ansible-playbook -i "<target_host>," -b --ask-become-pass pxe-server.yml
 ```
 
+### Tests
+
+`v1.0.0` tests results:
+
+| Description | Result |
+| --- | --- |
+| Boot Xen 4.8 and Verify if IOMMU is enabled | FAIL |
+| Boot Xen 4.8 and Verify if IOMMU is enabled on Linux development kernel | FAIL |
+| Boot Xen development kernel and Linux 4.14.y | PASS |
+| Boot to Core 6.4 booted over iPXE | FAIL |
+| Voyage installation | FAIL |
+| Ubuntu installation | PASS |
+| Debian i386 installation | FAIL |
+| Debian installation | PASS |
+| pfSense 2.4.x installation | FAIL |
+
+Test duration: ~2h15min
+
 ### Performance
 
 ```
