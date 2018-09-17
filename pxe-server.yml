@@ -5,11 +5,11 @@
   become_user: root
   become_method: su
   roles:
-    - common
-    - debops.apt_preferences
-    - apt
-    - docker
-    - netboot
+    - { role: 'debops.apt_preferences', tags: 'debops.apt_preferences' }
+    - { role: 'apt', tags: 'apt' }
+    - { role: 'docker', tags: 'docker' }
+    - { role: 'netboot', tags: 'netboot' }
+    - { role: 'tinycoreos', tags: 'tinycoreos' }
 
   tasks:
 
