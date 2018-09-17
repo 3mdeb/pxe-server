@@ -20,7 +20,7 @@
 
 - name: create Xen dev symlink
   file:
-    src: /var/netboot/kernels/xen-4.8-amd64
+    src: xen-4.8-amd64
     dest: /var/netboot/kernels/xen-dev
     state: link
     #TODO: remove force after adding xen kernel
@@ -28,7 +28,7 @@
 
 - name: create Linux dev symlink
   file:
-    src: /var/netboot/kernels/vmlinuz-4.14.y
+    src: vmlinuz-4.14.y
     dest: /var/netboot/kernels/vmlinuz-dev
     state: link
     #TODO: remove force after adding xen kernel

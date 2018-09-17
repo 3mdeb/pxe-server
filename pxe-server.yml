@@ -16,28 +16,33 @@
     #TODO: we should rely on stable release available on cloud
     - name: Copy Debian rootfs
       copy:
-        src: /home/pietrushnic/storage/projects/2017/3mdeb/tmp/release-v1.0.0/rootfs-v1.0.0.tar.gz
+        src: /home/pietrushnic/storage/projects/2017/3mdeb/debian-rootfs-builder/rootfs-v1.0.0.tar.gz
         dest: /tmp/rootfs-{{ release_version }}.tar.gz
 
     - name: Copy Linux 4.9.y
       copy:
-        src: /home/pietrushnic/storage/projects/2017/3mdeb/tmp/release-v1.0.0/vmlinuz-4.9.122
+        src: /home/pietrushnic/storage/projects/2017/3mdeb/debian-rootfs-builder/vmlinuz-4.9.122
         dest: /var/netboot/kernels/vmlinuz-4.9.122
 
     - name: Copy Linux 4.14.y
       copy:
-        src: /home/pietrushnic/storage/projects/2017/3mdeb/tmp/release-v1.0.0/vmlinuz-4.14.65
+        src: /home/pietrushnic/storage/projects/2017/3mdeb/debian-rootfs-builder/vmlinuz-4.14.65
         dest: /var/netboot/kernels/vmlinuz-4.14.65
+
+    - name: Copy Xen 4.8
+      copy:
+        src: /home/pietrushnic/storage/projects/2017/3mdeb/debian-rootfs-builder/xen-4.8-amd64
+        dest: /var/netboot/kernels/xen-4.8-amd64
 
     - name: create Linux 4.14.y
       file:
-        src: /var/netboot/kernels/vmlinuz-4.14.65
+        src: vmlinuz-4.14.65
         dest: /var/netboot/kernels/vmlinuz-4.14.y
         state: link
 
     - name: create Linux 4.9.y
       file:
-        src: /var/netboot/kernels/vmlinuz-4.9.122
+        src: vmlinuz-4.9.122
         dest: /var/netboot/kernels/vmlinuz-4.9.y
         state: link
 
