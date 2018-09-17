@@ -35,3 +35,4 @@
   with_items:
     - docker-ce
     - python-pip
+    - gzip
