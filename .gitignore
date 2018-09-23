@@ -1,2 +1,4 @@
 ansible-venv
 pxe-server.retry
+results
+rootfs
