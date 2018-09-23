@@ -5,7 +5,7 @@
     checksum: sha256:a0824dc1a65d0b5f1969fe72e03c682a1716df8eb5bb179d9baf6b8f28dc8e74
 
 - name: unarchive core.gz
-  command: gunzip /tmp/core.gz
+  command: gunzip -f /tmp/core.gz
   args:
     chdir: /tmp
 
