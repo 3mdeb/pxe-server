@@ -30,6 +30,26 @@ ssh-copy-id -i ~/.ssh/ansible <user>@<target_host>
 
 ## Initial deployment
 
+### Rootfs components creation
+
+```
+docker run --privileged --rm -v $HOME/.ansible:/root/.ansible  \
+-v $HOME/.ccache:/home/debian/.ccache \ -v $PWD:/home/debian/scripts \
+-t -i 3mdeb/debian-rootfs-builder ansible-playbook -vvv \ -i hosts \
+/home/debian/scripts/create-rootfs-components.yml
+```
+
+### Rootfs preparation
+
+```
+docker run --privileged --rm -v $HOME/.ansible:/root/.ansible  \
+-v $HOME/.ccache:/home/debian/.ccache \ -v $PWD:/home/debian/scripts \
+-t -i 3mdeb/debian-rootfs-builder ansible-playbook -vvv \ -i hosts \
+/home/debian/scripts/prepare_rootfs.yml
+```
+
+### Deploy
+
 Following procedure assume deployment on clean Debian as target system:
 
 ```
