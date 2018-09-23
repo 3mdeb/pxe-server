@@ -1,0 +1,25 @@
+- name: chroot mount
+  hosts: localhost
+  connection: local
+  roles:
+    - { role: 'common', tags: 'rootfs_prepare' }
+    - { role: 'chroot_mount', tags: 'install_in_rootfs' }
+
+- name: intall kernels and all remaining packages
+  hosts: rootfs_chroot
+  connection: chroot
+  roles:
+    - { role: 'common', tags: 'install_in_rootfs' }
+    - { role: 'config', tags: 'install_in_rootfs' }
+    - { role: 'packages', tags: 'install_in_rootfs' }
+    - { role: 'linux-install', version: "{{ linux_4_9 }}", tags: 'install_in_rootfs' }
+    - { role: 'linux-install', version: "{{ linux_4_14 }}", tags: 'install_in_rootfs' }
+    - { role: 'chroot_cleanup', tags: 'install_in_rootfs' }
+
+- name: umount chroot and prepare artifacts
+  hosts: localhost
+  connection: local
+  roles:
+    - { role: 'chroot_umount', tags: 'install_in_rootfs' }
+    - { role: 'common', tags: 'install_in_rootfs' }
+    - { role: 'prepare_artifacts', tags: 'install_in_rootfs' }
