@@ -1,0 +1,154 @@
+- name: check linux_headers
+  stat:
+    path: "{{ rootfs_dir }}/linux-headers-{{ version }}_{{ version }}-1_amd64.deb"
+  register: linux_headers
+- name: check linux_image_dbg
+  stat:
+    path: "{{ rootfs_dir }}/linux-image-{{ version }}-dbg_{{ version }}-1_amd64.deb"
+  register: linux_image_dbg
+- name: check linux_image
+  stat:
+    path: "{{ rootfs_dir }}/linux-image-{{ version }}_{{ version }}-1_amd64.deb"
+  register: linux_image
+- name: check linux_libc
+  stat:
+    path: "{{ rootfs_dir }}/linux-libc-dev_{{ version }}-1_amd64.deb"
+  register: linux_libc
+- name: check vmlinuz
+  stat:
+    path: "{{ results_dir }}/vmlinuz-{{ version }}"
+  register: vmlinuz
+- name: check config
+  stat:
+    path: "{{ results_dir }}/config-{{ version }}"
+  register: config_ver
+
+- name: get Linux "{{ version }}"
+  get_url:
+    url: https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-{{ version }}.tar.gz
+    # TODO: nice would be remote checksum that can verify if package is fine
+    dest: "{{ rootfs_dir }}/linux-{{ version }}.tar.gz"
+  register: result
+  until: result is succeeded
+  retries: 3
+  delay: 3
+  when:
+    - not config_ver.stat.exists
+    - not vmlinuz.stat.exists
+    - not linux_libc.stat.exists
+    - not linux_image.stat.exists
+    - not linux_image_dbg.stat.exists
+    - not linux_headers.stat.exists
+
+- name: decompress Linux "{{ version }}"
+  unarchive:
+    src: "{{ rootfs_dir }}/linux-{{ version }}.tar.gz"
+    dest: "{{ rootfs_dir }}"
+    creates: "{{ rootfs_dir }}/linux-{{ version }}"
+  when:
+    - not config_ver.stat.exists
+    - not vmlinuz.stat.exists
+    - not linux_libc.stat.exists
+    - not linux_image.stat.exists
+    - not linux_image_dbg.stat.exists
+    - not linux_headers.stat.exists
+
+- name: make mrproper
+  command: make mrproper
+  args:
+    chdir: "{{ rootfs_dir }}/linux-{{ version }}"
+  when:
+    - not config_ver.stat.exists
+    - not vmlinuz.stat.exists
+    - not linux_libc.stat.exists
+    - not linux_image.stat.exists
+    - not linux_image_dbg.stat.exists
+    - not linux_headers.stat.exists
+
+- name: get apu_config
+  get_url:
+    url: "{{ config }}"
+    dest: "{{ rootfs_dir }}/linux-{{ version }}/.config"
+  when:
+    - not config_ver.stat.exists
+    - not vmlinuz.stat.exists
+    - not linux_libc.stat.exists
+    - not linux_image.stat.exists
+    - not linux_image_dbg.stat.exists
+    - not linux_headers.stat.exists
+
+- name: make olddefconfig
+  command: make olddefconfig
+  args:
+    chdir: "{{ rootfs_dir }}/linux-{{ version }}"
+  when:
+    - not config_ver.stat.exists
+    - not vmlinuz.stat.exists
+    - not linux_libc.stat.exists
+    - not linux_image.stat.exists
+    - not linux_image_dbg.stat.exists
+    - not linux_headers.stat.exists
+
+- name: make deb-pkg
+  command: make -j{{ ansible_processor_vcpus }} deb-pkg bzImage
+  #command: make deb-pkg bzImage
+  args:
+    chdir: "{{ rootfs_dir }}/linux-{{ version }}"
+    creates:
+      - "{{ rootfs_dir }}/linux-headers-{{ version }}_{{ version }}-1_amd64.deb"
+      - "{{ rootfs_dir }}/linux-image-{{ version }}-dbg_{{ version }}-1_amd64.deb"
+      - "{{ rootfs_dir }}/linux-image-{{ version }}_{{ version }}-1_amd64.deb"
+      - "{{ rootfs_dir }}/linux-libc-dev_{{ version }}-1_amd64.deb"
+  ignore_errors: yes
+  when:
+    - not config_ver.stat.exists
+    - not vmlinuz.stat.exists
+    - not linux_libc.stat.exists
+    - not linux_image.stat.exists
+    - not linux_image_dbg.stat.exists
+    - not linux_headers.stat.exists
+
+#TODO: this is for netboot/kernels directory
+- name: copy bzImage to known location
+  copy:
+    src: "{{ rootfs_dir }}/linux-{{ version }}/arch/x86/boot/bzImage"
+    dest: "{{ results_dir }}/vmlinuz-{{ version }}"
+  when:
+    - not config_ver.stat.exists
+    - not vmlinuz.stat.exists
+    - not linux_libc.stat.exists
+    - not linux_image.stat.exists
+    - not linux_image_dbg.stat.exists
+    - not linux_headers.stat.exists
+
+# TODO: save config for further commit to apu2-documentation
+- name: copy .config to known location
+  copy:
+    src: "{{ rootfs_dir }}/linux-{{ version }}/.config"
+    dest: "{{ results_dir }}/config-{{ version }}"
+  when:
+    - not config_ver.stat.exists
+    - not vmlinuz.stat.exists
+    - not linux_libc.stat.exists
+    - not linux_image.stat.exists
+    - not linux_image_dbg.stat.exists
+    - not linux_headers.stat.exists
+
+- name: remove everything except artifacts
+  file:
+    path: "{{ rootfs_dir }}/{{ item }}"
+    state: absent
+  with_items:
+    - linux-{{ version }}
+    - linux-{{ version }}.tar.gz
+    - linux-{{ version }}_{{ version }}-1_amd64.changes
+    - linux-{{ version }}_{{ version }}-1.debian.tar.gz
+    - linux-{{ version }}_{{ version }}-1.dsc
+    - linux-{{ version }}_{{ version }}.orig.tar.gz
+  when:
+    - not config_ver.stat.exists
+    - not vmlinuz.stat.exists
+    - not linux_libc.stat.exists
+    - not linux_image.stat.exists
+    - not linux_image_dbg.stat.exists
+    - not linux_headers.stat.exists
