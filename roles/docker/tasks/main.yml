@@ -4,6 +4,10 @@
     name: docker-py
     state: absent
 
+- name: Install stuptools
+  pip:
+    name: setuptools
+
 - name: Install docker
   pip:
     name: docker
