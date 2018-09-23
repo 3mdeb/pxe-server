@@ -1,0 +1,36 @@
+- name: Copy Debian rootfs
+  copy:
+    src: "results/rootfs-{{ release_version }}.tar.gz"
+    dest: /tmp/rootfs-{{ release_version }}.tar.gz
+- name: Copy Linux 4.9.y
+  copy:
+    src: "results/vmlinuz-{{ linux_4_9 }}"
+    dest: /var/netboot/kernels/vmlinuz-{{ linux_4_9 }}
+- name: Copy Linux 4.14.y
+  copy:
+    src: "results/vmlinuz-{{ linux_4_9 }}"
+    dest: /var/netboot/kernels/vmlinuz-{{ linux_4_9 }}
+- name: Copy Xen 4.8
+  copy:
+    src: "results/xen-4.8-amd64"
+    dest: /var/netboot/kernels/xen-4.8-amd64
+- name: create Linux 4.14.y symlink
+  file:
+    src: vmlinuz-{{ linux_4_14 }}
+    dest: /var/netboot/kernels/vmlinuz-{{ linux_4_14 }}
+    state: link
+    force: yes
+- name: create Linux 4.9.y symlink
+  file:
+    src: vmlinuz-{{ linux_4_9 }}
+    dest: /var/netboot/kernels/vmlinuz-{{ linux_4_9 }}
+    state: link
+    force: yes
+- name: Unarchive Debian rootfs
+  unarchive:
+    src: /tmp/rootfs-{{ release_version }}.tar.gz
+    dest: /var
+    remote_src: yes
+    keep_newer: yes
+    group: debian
+    owner: debian
