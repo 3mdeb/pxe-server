@@ -5,86 +5,22 @@
   become_user: root
   become_method: su
   roles:
-    - { role: 'debops.apt_preferences', tags: 'debops.apt_preferences' }
-    - { role: 'apt', tags: 'apt' }
-    - { role: 'docker', tags: 'docker' }
-    - { role: 'netboot', tags: 'netboot' }
-    - { role: 'tinycoreos', tags: 'tinycoreos' }
+    - { role: 'common' }
+    - { role: 'debops.apt_preferences' }
+    - { role: 'apt' }
+    - { role: 'docker' }
+    - { role: 'netboot' }
+    - { role: 'tinycoreos' }
+    - { role: 'deploy_artifacts' }
+    - { role: 'voyage' }
 
   tasks:
-
-    #TODO: we should rely on stable release available on cloud
-    - name: Copy Debian rootfs
-      copy:
-        src: /home/pietrushnic/storage/projects/2017/3mdeb/debian-rootfs-builder/rootfs-v1.0.0.tar.gz
-        dest: /tmp/rootfs-{{ release_version }}.tar.gz
-
-    - name: Copy Linux 4.9.y
-      copy:
-        src: /home/pietrushnic/storage/projects/2017/3mdeb/debian-rootfs-builder/vmlinuz-4.9.122
-        dest: /var/netboot/kernels/vmlinuz-4.9.122
-
-    - name: Copy Linux 4.14.y
-      copy:
-        src: /home/pietrushnic/storage/projects/2017/3mdeb/debian-rootfs-builder/vmlinuz-4.14.65
-        dest: /var/netboot/kernels/vmlinuz-4.14.65
-
-    - name: Copy Xen 4.8
-      copy:
-        src: /home/pietrushnic/storage/projects/2017/3mdeb/debian-rootfs-builder/xen-4.8-amd64
-        dest: /var/netboot/kernels/xen-4.8-amd64
-
-    - name: create Linux 4.14.y
-      file:
-        src: vmlinuz-4.14.65
-        dest: /var/netboot/kernels/vmlinuz-4.14.y
-        state: link
-
-    - name: create Linux 4.9.y
-      file:
-        src: vmlinuz-4.9.122
-        dest: /var/netboot/kernels/vmlinuz-4.9.y
-        state: link
-
-    # TODO: because of iso_extract lack of support for directories,
-    # implementation of ISO extraction for Voyage would be to convolutes, we
-    # leaving it as it is
-    - name: Get Voyage
-      get_url:
-        url: https://cloud.3mdeb.com/index.php/s/rUZPwRHOjxpSxN4/download
-        dest: /tmp/voyage.tar.gz
-        checksum: sha256:86934186fde2cbc749b2e33d027977f1b3a0cf02f69c2ffc9446e620b3d6e5c6
-
-    - name: Create /var/voyage
-      file:
-        path: /var/voyage
-        state: directory
-
-    - name: Unarchive Debian rootfs
-      unarchive:
-        src: /tmp/rootfs-{{ release_version }}.tar.gz
-        dest: /var
-        remote_src: yes
-        keep_newer: yes
-        group: debian
-        owner: debian
-
-    - name: Unarchive Voyage
-      unarchive:
-        src: /tmp/voyage.tar.gz
-        dest: /var/voyage
-        remote_src: yes
-        keep_newer: yes
-        group: debian
-        owner: debian
-
     - name: Mount nfsd
       mount:
         path: /proc/fs/nfsd
         src: nfsd
         fstype: nfsd
         state: present
-
     - name: Restart server
       command: /sbin/shutdown -r +1
       async: 0
