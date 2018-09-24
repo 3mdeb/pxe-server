@@ -78,8 +78,8 @@ boot
 goto MENU
 
 :core-6.4
-kernel http://www.tinycorelinux.net/6.x/x86/archive/6.4/distribution_files/vmlinuz --- console=ttyS0,115200 earlyprint=serial,ttyS0,115200 
-initrd http://www.tinycorelinux.net/6.x/x86/archive/6.4/distribution_files/core.gz
+kernel http://www.tinycorelinux.net/6.x/x86/archive/6.4/distribution_files/vmlinuz --- root=/dev/ram0 console=ttyS0,115200 earlyprint=serial,ttyS0,115200 
+initrd http://{{ ansible_default_ipv4.address }}:8000/core.gz
 boot
 goto MENU
 
