@@ -1,0 +1,45 @@
+- name: get Tiny Core Linux 6.4 initrd
+  get_url:
+    url: http://www.tinycorelinux.net/6.x/x86/archive/6.4/distribution_files/core.gz
+    dest: /tmp/core.gz
+    checksum: sha256:a0824dc1a65d0b5f1969fe72e03c682a1716df8eb5bb179d9baf6b8f28dc8e74
+
+- name: unarchive core.gz
+  command: gunzip -f /tmp/core.gz
+  args:
+    chdir: /tmp
+
+- name: Create /tmp/cpio
+  file:
+    path: /tmp/cpio
+    state: directory
+
+- name: unarchive core cpio
+  command: cpio -i --file /tmp/core
+  args:
+    chdir: /tmp/cpio
+
+- name: copy etc/securetty
+  copy:
+    src: files/securetty
+    dest: /tmp/cpio/etc/securetty
+
+- name: copy etc/inittab
+  copy:
+    src: files/inittab
+    dest: /tmp/cpio/etc/inittab
+
+- name: Remove /tmp/core
+  file:
+    path: /tmp/core
+    state: absent
+
+- name: create core cpio
+  shell: find | cpio -o -H newc --file /tmp/core
+  args:
+    chdir: /tmp/cpio
+
+- name: archive core
+  command: gzip core
+  args:
+    chdir: /tmp

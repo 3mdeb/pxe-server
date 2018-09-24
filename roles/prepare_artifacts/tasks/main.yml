@@ -1,0 +1,33 @@
+- name: check if "{{ rootfs_tar_gz }}" exist
+  stat:
+    path: "{{ rootfs_tar_gz }}"
+  register: rootfs_file
+- name: check if "{{ results_dir }}/xen-4.8-amd64" exist
+  stat:
+    path: "{{ results_dir }}/xen-4.8-amd64"
+  register: xen_file
+# for some reason archive return error, so we use tar directly An exception
+# occurred during task execution. To see the full traceback, use -vvv. The
+# error was: OSError: [Errno 2] No such file or directory:
+# 'rootfs/sbin/runlevel'
+#
+# fatal: [localhost]: FAILED! => {"changed": false, "msg": "Error when
+# writing tar.gz archive at rootfs-v1.0.0.tar.gz: [Errno 2] No such file or
+# directory: 'rootfs/sbin/runlevel'"}
+- name: compress rootfs
+  command: tar czvf "{{ rootfs_tar_gz }}" rootfs
+  args:
+    chdir: "{{ rootfs_dir }}/.."
+  when: not rootfs_file.stat.exists
+
+- name: preserver Xen kernel
+  copy:
+    src: "{{ rootfs_dir }}/boot/xen-4.8-amd64.gz"
+    dest: "{{ results_dir }}/xen-4.8-amd64.gz"
+  when: not xen_file.stat.exists
+
+- name: unarchive Xen kernel
+  command: gunzip -f "{{ results_dir }}/xen-4.8-amd64.gz"
+  args:
+    chdir: "{{ results_dir }}"
+  when: not xen_file.stat.exists

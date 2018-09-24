@@ -1,0 +1,94 @@
+#!ipxe
+#
+:MENU
+menu
+item --gap -- ---------------- iPXE boot menu ----------------
+item shell                           ipxe shell
+item xen                             Xen
+item xen-dev                         Xen dev
+item xen-linux-dev                   Xen Linux dev
+item deb-netboot-dev                 Debian stable netboot dev
+item deb-netboot-4.9.y               Debian stable netboot 4.9.y
+item deb-netboot-4.14.y              Debian stable netboot 4.14.y
+item deb-stable-netinst              Debian stable netinst
+item deb-i386-stable-netinst         Debian i386 stable netinst
+item voyage-netinst                  Voyage netinst 0.11.0
+item ubuntu-lts-netinst              Ubuntu LTS netinst
+item coreos-netinst                  Core OS  netinst
+item core-6.4                        Core 6.4
+item --gap -- ------------ iPXE boot menu end ----------------
+choose --default boot --timeout 3000 target && goto ${target}
+ 
+:xen
+kernel kernels/xen-4.8-amd64 dom0_mem=512M loglvl=all guest_loglvl=all com1=115200,8n1 console=com1
+module kernels/vmlinuz-4.14.y console=hvc0 earlyprintk=xen nomodeset root=/dev/nfs rw ip=dhcp nfsroot={{ ansible_default_ipv4.address }}:/srv/nfs/debian,vers=3,udp nfsrootdebug
+boot
+goto MENU
+
+:xen-dev
+kernel kernels/xen-dev dom0_mem=512M loglvl=all guest_loglvl=all com1=115200,8n1 console=com1
+module kernels/vmlinuz-4.14.y console=hvc0 earlyprintk=xen nomodeset root=/dev/nfs rw ip=dhcp nfsroot={{ ansible_default_ipv4.address }}:/srv/nfs/debian,vers=3,udp nfsrootdebug
+boot
+goto MENU
+
+:xen-linux-dev
+kernel kernels/xen-4.8-amd64 dom0_mem=512M loglvl=all guest_loglvl=all com1=115200,8n1 console=com1
+module kernels/vmlinuz-dev console=hvc0 earlyprintk=xen nomodeset root=/dev/nfs rw ip=dhcp nfsroot={{ ansible_default_ipv4.address }}:/srv/nfs/debian,vers=3,udp nfsrootdebug
+boot
+goto MENU
+
+:deb-netboot-dev
+kernel kernels/vmlinuz-dev bootfile=http://{{ ansible_default_ipv4.address }}:8000/menu.ipxe root=/dev/nfs rw ip=dhcp nfsroot={{ ansible_default_ipv4.address }}:/srv/nfs/debian,vers=3,udp nfsrootdebug --- console=ttyS0,115200 earlyprint=serial,ttyS0,115200
+boot
+goto MENU
+
+:deb-netboot-4.9.y
+kernel kernels/vmlinuz-4.9.y bootfile=http://{{ ansible_default_ipv4.address }}:8000/menu.ipxe root=/dev/nfs rw ip=dhcp nfsroot={{ ansible_default_ipv4.address }}:/srv/nfs/debian,vers=3,udp nfsrootdebug --- console=ttyS0,115200 earlyprint=serial,ttyS0,115200
+boot
+goto MENU
+
+:deb-netboot-4.14.y
+kernel kernels/vmlinuz-4.14.y bootfile=http://{{ ansible_default_ipv4.address }}:8000/menu.ipxe root=/dev/nfs rw ip=dhcp nfsroot={{ ansible_default_ipv4.address }}:/srv/nfs/debian,vers=3,udp nfsrootdebug --- console=ttyS0,115200 earlyprint=serial,ttyS0,115200
+boot
+goto MENU
+
+:deb-stable-netinst
+kernel http://ftp.nl.debian.org/debian/dists/stable/main/installer-amd64/current/images/netboot/debian-installer/amd64/linux bootfile=http://{{ ansible_default_ipv4.address }}:8000/menu.ipxe --- console=ttyS0,115200 earlyprint=serial,ttyS0,115200 initrd=http://ftp.nl.debian.org/debian/dists/stable/main/installer-amd64/current/images/netboot/debian-installer/amd64/initrd.gz
+initrd http://ftp.nl.debian.org/debian/dists/stable/main/installer-amd64/current/images/netboot/debian-installer/amd64/initrd.gz
+boot
+goto MENU
+
+:deb-i386-stable-netinst
+kernel http://ftp.nl.debian.org/debian/dists/stable/main/installer-i386/current/images/netboot/debian-installer/i386/linux bootfile=http://{{ ansible_default_ipv4.address }}:8000/menu.ipxe --- console=ttyS0,115200 earlyprint=serial,ttyS0,115200 initrd=http://ftp.nl.debian.org/debian/dists/stable/main/installer-i386/current/images/netboot/debian-installer/i386/initrd.gz
+initrd http://ftp.nl.debian.org/debian/dists/stable/main/installer-i386/current/images/netboot/debian-installer/i386/initrd.gz
+boot
+goto MENU
+
+:ubuntu-lts-netinst
+kernel http://archive.ubuntu.com/ubuntu/dists/xenial-updates/main/installer-amd64/current/images/hwe-netboot/ubuntu-installer/amd64/linux bootfile=http://{{ ansible_default_ipv4.address }}:8000/menu.ipxe --- console=ttyS0,115200 earlyprint=serial,ttyS0,115200 initrd=initrd.gz
+initrd http://archive.ubuntu.com/ubuntu/dists/xenial-updates/main/installer-amd64/current/images/hwe-netboot/ubuntu-installer/amd64/initrd.gz
+boot
+goto MENU
+
+:coreos-netinst
+set base-url http://stable.release.core-os.net/amd64-usr/current
+kernel ${base-url}/coreos_production_pxe.vmlinuz initrd=coreos_production_pxe_image.cpio.gz coreos.first_boot=1 --- console=ttyS0,115200 coreos.autologin=ttyS0 earlyprint=serial,ttyS0,115200
+initrd ${base-url}/coreos_production_pxe_image.cpio.gz
+boot
+goto MENU
+
+:core-6.4
+kernel http://www.tinycorelinux.net/6.x/x86/archive/6.4/distribution_files/vmlinuz --- root=/dev/ram0 console=ttyS0,115200 earlyprint=serial,ttyS0,115200 
+initrd http://{{ ansible_default_ipv4.address }}:8000/core.gz
+boot
+goto MENU
+
+:voyage-netinst
+kernel kernels/voyage/vmlinuz bootfile=http://{{ ansible_default_ipv4.address }}:8000/menu.ipxe boot=live netboot=nfs root=/dev/nfs rw ip=dhcp nfsroot={{ ansible_default_ipv4.address }}:/srv/nfs/voyage --- console=ttyS0,115200 earlyprint=serial,ttyS0,115200
+initrd kernels/voyage/initrd.img
+boot
+goto MENU
+
+:shell
+shell ||
+goto MENU

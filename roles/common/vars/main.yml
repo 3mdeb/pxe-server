@@ -1,0 +1,7 @@
+release_version: "v1.0.0"
+linux_4_9: "4.9.128"
+linux_4_14: "4.14.71"
+apu_config: "https://raw.githubusercontent.com/pcengines/apu2-documentation/master/configs/config-4.14.59"
+rootfs_tar_gz: "{{ results_dir }}/rootfs-{{ release_version }}.tar.gz"
+rootfs_dir: "/home/debian/scripts/rootfs"
+results_dir: "/home/debian/scripts/results"
