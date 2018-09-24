@@ -29,7 +29,17 @@
     src: files/inittab
     dest: /tmp/cpio/etc/inittab
 
-- name: archive core cpio
-  shell: find | cpio -o -H newc --file /var/netboot/core.gz
+- name: Remove /tmp/core
+  file:
+    path: /tmp/core
+    state: absent
+
+- name: create core cpio
+  shell: find | cpio -o -H newc --file /tmp/core
   args:
     chdir: /tmp/cpio
+
+- name: archive core
+  command: gzip core
+  args:
+    chdir: /tmp
