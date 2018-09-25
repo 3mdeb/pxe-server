@@ -1,0 +1,19 @@
+- name: get tpm2-tools {{ tpm2_tools_version }}
+  get_url:
+    url: "https://github.com/tpm2-software/tpm2-tools/releases/download/{{ tpm2_tools_version }}/tpm2-tools-{{ tpm2_tools_version }}.tar.gz"
+    dest: /tmp/tpm2-tools.tar.gz
+
+- name: get tpm2-abrmd {{ tpm2_abrmd_version }}
+  get_url:
+    url: "https://github.com/tpm2-software/tpm2-abrmd/releases/download/{{ tpm2_abrmd_version }}/tpm2-abrmd-{{ tpm2_abrmd_version }}.tar.gz"
+    dest: /tmp/tpm2-abrmd.tar.gz
+
+- name: unarchive tpm2-tools {{ tpm2_tools_version }}
+  unarchive:
+    src: /tmp/tpm2-tools.tar.gz
+    dest: /tmp
+
+- name: unarchive tpm2-abrmd {{ tpm2_abrmd_version }}
+  unarchive:
+    src: /tmp/tpm2-abrmd.tar.gz
+    dest: /tmp
