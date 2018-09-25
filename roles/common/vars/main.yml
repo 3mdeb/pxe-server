@@ -5,3 +5,4 @@ apu_config: "https://raw.githubusercontent.com/pcengines/apu2-documentation/mast
 rootfs_tar_gz: "{{ results_dir }}/rootfs-{{ release_version }}.tar.gz"
 rootfs_dir: "/home/debian/scripts/rootfs"
 results_dir: "/home/debian/scripts/results"
+tpm2_tools_version: "3.1.2"

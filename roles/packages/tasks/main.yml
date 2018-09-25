@@ -6,6 +6,7 @@
   with_items:
     - apt-utils
     - autoconf
+    - automake
     - bc
     - binutils
     - bison
@@ -22,7 +23,10 @@
     - gettext
     - git
     - iasl
+    - libcurl-dev
     - liblzma-dev
+    - libssl-dev
+    - libtool
     - locales
     - m4
     - make
@@ -30,6 +34,7 @@
     - ncurses-dev
     - nfs-common
     - ntpdate
+    - pkg-config
     - python
     - python-dev
     - ssh
@@ -38,8 +43,8 @@
     - vim
     - wget
     - wpasupplicant
-    - zlib1g-dev
+    - xen-linux-system-amd64
     - xen-system-amd64
     - xen-tools
-    - xen-linux-system-amd64
+    - zlib1g-dev
 
