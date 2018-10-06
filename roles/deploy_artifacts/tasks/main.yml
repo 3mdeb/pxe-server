@@ -13,10 +13,25 @@
     src: "results/vmlinuz-{{ linux_4_14 }}"
     dest: /var/netboot/kernels/vmlinuz-{{ linux_4_14 }}
 
+- name: Copy Linux Xen dev
+  copy:
+    src: "results/vmlinuz-xen-dev"
+    dest: /var/netboot/kernels/vmlinuz-xen-dev
+
 - name: Copy Xen 4.8
   copy:
     src: "results/xen-4.8-amd64"
     dest: /var/netboot/kernels/xen-4.8-amd64
+
+- name: Copy Xen dev
+  copy:
+    src: "results/xen-dev"
+    dest: /var/netboot/kernels/xen-dev
+
+- name: Copy xen-image-minimal-genericx86-64.ext4
+  copy:
+    src: "results/xen-image-minimal-genericx86-64.ext4"
+    dest: /var/xen-image-minimal-genericx86-64.ext4
 
 - name: create Linux 4.14.y symlink
   file:
