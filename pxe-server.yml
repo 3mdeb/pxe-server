@@ -15,6 +15,12 @@
     - { role: 'voyage' }
 
   tasks:
+
+    - name: copy core.gz to /var/netboot
+      copy:
+        src: /tmp/core.gz
+        dest: /var/netboot/core.gz
+        remote_src: yes
     - name: Mount nfsd
       mount:
         path: /proc/fs/nfsd
