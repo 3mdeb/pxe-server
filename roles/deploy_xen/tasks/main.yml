@@ -1,0 +1,15 @@
+- name: Copy Linux Xen dev
+  copy:
+    src: "results/vmlinuz-xen-dev"
+    dest: /var/netboot/kernels/vmlinuz-xen-dev
+
+- name: Copy Xen dev
+  copy:
+    src: "results/xen-dev"
+    dest: /var/netboot/kernels/xen-dev
+
+- name: Copy xen-image-minimal-genericx86-64.ext4
+  copy:
+    src: "results/xen-image-minimal-genericx86-64.ext4"
+    dest: /var/xen-image-minimal-genericx86-64.ext4
+

@@ -7,7 +7,7 @@
   roles:
     - { role: 'common' }
     - { role: 'docker' }
-    - { role: 'deploy_artifacts' }
+    - { role: 'deploy_xen' }
 
   tasks:
     - name: Mount nfsd
