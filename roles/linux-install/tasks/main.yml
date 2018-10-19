@@ -10,4 +10,5 @@
     - linux-image-{{ version }}_{{ version }}-1_amd64.deb
     - linux-image-{{ version }}-dbg_{{ version }}-1_amd64.deb
     - linux-libc-dev_{{ version }}-1_amd64.deb
-  when: not mod_dir.stat.exists
+  when:
+    - not mod_dir.stat.exists

@@ -31,14 +31,9 @@
   register: result
   until: result is succeeded
   retries: 3
-  delay: 3
+  delay: 3 
   when:
-    - not config_ver.stat.exists
-    - not vmlinuz.stat.exists
-    - not linux_libc.stat.exists
-    - not linux_image.stat.exists
-    - not linux_image_dbg.stat.exists
-    - not linux_headers.stat.exists
+    - not config_ver.stat.exists or not vmlinuz.stat.exists or not linux_libc.stat.exists or not linux_image.stat.exists or not linux_image_dbg.stat.exists or not linux_headers.stat.exists
 
 - name: decompress Linux "{{ version }}"
   unarchive:
@@ -46,48 +41,28 @@
     dest: "{{ rootfs_dir }}"
     creates: "{{ rootfs_dir }}/linux-{{ version }}"
   when:
-    - not config_ver.stat.exists
-    - not vmlinuz.stat.exists
-    - not linux_libc.stat.exists
-    - not linux_image.stat.exists
-    - not linux_image_dbg.stat.exists
-    - not linux_headers.stat.exists
+    - not config_ver.stat.exists or not vmlinuz.stat.exists or not linux_libc.stat.exists or not linux_image.stat.exists or not linux_image_dbg.stat.exists or not linux_headers.stat.exists
 
 - name: make mrproper
   command: make mrproper
   args:
     chdir: "{{ rootfs_dir }}/linux-{{ version }}"
   when:
-    - not config_ver.stat.exists
-    - not vmlinuz.stat.exists
-    - not linux_libc.stat.exists
-    - not linux_image.stat.exists
-    - not linux_image_dbg.stat.exists
-    - not linux_headers.stat.exists
+    - not config_ver.stat.exists or not vmlinuz.stat.exists or not linux_libc.stat.exists or not linux_image.stat.exists or not linux_image_dbg.stat.exists or not linux_headers.stat.exists
 
-- name: get apu_config
-  get_url:
-    url: "{{ config }}"
+- name: copy kernel config
+  copy:
+    src: "{{ results_dir }}/config-{{ version }}"
     dest: "{{ rootfs_dir }}/linux-{{ version }}/.config"
   when:
-    - not config_ver.stat.exists
-    - not vmlinuz.stat.exists
-    - not linux_libc.stat.exists
-    - not linux_image.stat.exists
-    - not linux_image_dbg.stat.exists
-    - not linux_headers.stat.exists
+    - not config_ver.stat.exists or not vmlinuz.stat.exists or not linux_libc.stat.exists or not linux_image.stat.exists or not linux_image_dbg.stat.exists or not linux_headers.stat.exists
 
 - name: make olddefconfig
   command: make olddefconfig
   args:
     chdir: "{{ rootfs_dir }}/linux-{{ version }}"
   when:
-    - not config_ver.stat.exists
-    - not vmlinuz.stat.exists
-    - not linux_libc.stat.exists
-    - not linux_image.stat.exists
-    - not linux_image_dbg.stat.exists
-    - not linux_headers.stat.exists
+    - not config_ver.stat.exists or not vmlinuz.stat.exists or not linux_libc.stat.exists or not linux_image.stat.exists or not linux_image_dbg.stat.exists or not linux_headers.stat.exists
 
 - name: make deb-pkg
   command: make -j{{ ansible_processor_vcpus }} deb-pkg bzImage
@@ -101,12 +76,7 @@
       - "{{ rootfs_dir }}/linux-libc-dev_{{ version }}-1_amd64.deb"
   ignore_errors: yes
   when:
-    - not config_ver.stat.exists
-    - not vmlinuz.stat.exists
-    - not linux_libc.stat.exists
-    - not linux_image.stat.exists
-    - not linux_image_dbg.stat.exists
-    - not linux_headers.stat.exists
+    - not config_ver.stat.exists or not vmlinuz.stat.exists or not linux_libc.stat.exists or not linux_image.stat.exists or not linux_image_dbg.stat.exists or not linux_headers.stat.exists
 
 #TODO: this is for netboot/kernels directory
 - name: copy bzImage to known location
@@ -114,12 +84,7 @@
     src: "{{ rootfs_dir }}/linux-{{ version }}/arch/x86/boot/bzImage"
     dest: "{{ results_dir }}/vmlinuz-{{ version }}"
   when:
-    - not config_ver.stat.exists
-    - not vmlinuz.stat.exists
-    - not linux_libc.stat.exists
-    - not linux_image.stat.exists
-    - not linux_image_dbg.stat.exists
-    - not linux_headers.stat.exists
+    - not config_ver.stat.exists or not vmlinuz.stat.exists or not linux_libc.stat.exists or not linux_image.stat.exists or not linux_image_dbg.stat.exists or not linux_headers.stat.exists
 
 # TODO: save config for further commit to apu2-documentation
 - name: copy .config to known location
@@ -127,12 +92,7 @@
     src: "{{ rootfs_dir }}/linux-{{ version }}/.config"
     dest: "{{ results_dir }}/config-{{ version }}"
   when:
-    - not config_ver.stat.exists
-    - not vmlinuz.stat.exists
-    - not linux_libc.stat.exists
-    - not linux_image.stat.exists
-    - not linux_image_dbg.stat.exists
-    - not linux_headers.stat.exists
+    - not config_ver.stat.exists or not vmlinuz.stat.exists or not linux_libc.stat.exists or not linux_image.stat.exists or not linux_image_dbg.stat.exists or not linux_headers.stat.exists
 
 - name: remove everything except artifacts
   file:
@@ -146,9 +106,4 @@
     - linux-{{ version }}_{{ version }}-1.dsc
     - linux-{{ version }}_{{ version }}.orig.tar.gz
   when:
-    - not config_ver.stat.exists
-    - not vmlinuz.stat.exists
-    - not linux_libc.stat.exists
-    - not linux_image.stat.exists
-    - not linux_image_dbg.stat.exists
-    - not linux_headers.stat.exists
+    - not config_ver.stat.exists or not vmlinuz.stat.exists or not linux_libc.stat.exists or not linux_image.stat.exists or not linux_image_dbg.stat.exists or not linux_headers.stat.exists
