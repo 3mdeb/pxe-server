@@ -16,7 +16,7 @@
   when: not rootfs_file.stat.exists
 
 - name: debootstrap first stage
-  command: debootstrap --foreign --include=python --arch amd64 stable {{ rootfs_dir }} http://deb.debian.org/debian
+  command: debootstrap --foreign --include=python --arch amd64 sid {{ rootfs_dir }} http://deb.debian.org/debian
   when: not rootfs_file.stat.exists
 
 - name: debootstrap second stage
