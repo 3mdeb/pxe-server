@@ -20,19 +20,19 @@ item --gap -- ------------ iPXE boot menu end ----------------
 choose --default boot --timeout 3000 target && goto ${target}
  
 :xen
-kernel kernels/xen-4.8-amd64 dom0_mem=512M loglvl=all guest_loglvl=all com1=115200,8n1 console=com1
+kernel kernels/xen-{{ xen_version }} dom0_mem=512M loglvl=all guest_loglvl=all com1=115200,8n1 console=com1
 module kernels/vmlinuz-4.14.y console=hvc0 earlyprintk=xen nomodeset root=/dev/nfs rw ip=dhcp nfsroot={{ ansible_default_ipv4.address }}:/srv/nfs/debian,vers=3,udp nfsrootdebug
 boot
 goto MENU
 
 :xen-dev
 kernel kernels/xen-dev dom0_mem=512M loglvl=all guest_loglvl=all com1=115200,8n1 console=com1
-module kernels/vmlinuz-xen-dev console=hvc0 earlyprintk=xen nomodeset root=/dev/nfs rw ip=dhcp nfsroot={{ ansible_default_ipv4.address }}:/srv/nfs/xen-dev,vers=3,udp nfsrootdebug
+module kernels/vmlinuz-xen-dev console=hvc0 earlyprintk=xen nomodeset root=/dev/nfs rw ip=dhcp nfsroot={{ ansible_default_ipv4.address }}:/srv/nfs/debian,vers=3,udp nfsrootdebug
 boot
 goto MENU
 
 :xen-linux-dev
-kernel kernels/xen-4.8-amd64 dom0_mem=512M loglvl=all guest_loglvl=all com1=115200,8n1 console=com1
+kernel kernels/xen-{{ xen_version }} dom0_mem=512M loglvl=all guest_loglvl=all com1=115200,8n1 console=com1
 module kernels/vmlinuz-dev console=hvc0 earlyprintk=xen nomodeset root=/dev/nfs rw ip=dhcp nfsroot={{ ansible_default_ipv4.address }}:/srv/nfs/debian,vers=3,udp nfsrootdebug
 boot
 goto MENU

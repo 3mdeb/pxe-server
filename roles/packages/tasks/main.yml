@@ -2,7 +2,6 @@
   apt:
     name: "{{ item }}"
     state: present
-    update_cache: yes
   with_items:
     - apt-utils
     - autoconf
