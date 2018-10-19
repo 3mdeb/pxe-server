@@ -1,0 +1,7 @@
+version: '3'
+services:
+  apt-cacher:
+    image: apt-cacher
+    ports:
+      - "3142:3142"
+    container_name: apt-cacher-run
