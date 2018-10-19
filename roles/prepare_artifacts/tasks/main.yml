@@ -2,9 +2,9 @@
   stat:
     path: "{{ rootfs_tar_gz }}"
   register: rootfs_file
-- name: check if "{{ results_dir }}/xen-4.8-amd64" exist
+- name: check if "{{ results_dir }}/xen-{{ xen_version }}" exist
   stat:
-    path: "{{ results_dir }}/xen-4.8-amd64"
+    path: "{{ results_dir }}/xen-{{ xen_version }}"
   register: xen_file
 # for some reason archive return error, so we use tar directly An exception
 # occurred during task execution. To see the full traceback, use -vvv. The
@@ -22,12 +22,12 @@
 
 - name: preserver Xen kernel
   copy:
-    src: "{{ rootfs_dir }}/boot/xen-4.8-amd64.gz"
-    dest: "{{ results_dir }}/xen-4.8-amd64.gz"
+    src: "{{ rootfs_dir }}/boot/xen-{{ xen_version }}.gz"
+    dest: "{{ results_dir }}/xen-{{ xen_version }}.gz"
   when: not xen_file.stat.exists
 
 - name: unarchive Xen kernel
-  command: gunzip -f "{{ results_dir }}/xen-4.8-amd64.gz"
+  command: gunzip -f "{{ results_dir }}/xen-{{ xen_version }}.gz"
   args:
     chdir: "{{ results_dir }}"
   when: not xen_file.stat.exists

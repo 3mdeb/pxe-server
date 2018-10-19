@@ -13,10 +13,10 @@
     src: "results/vmlinuz-{{ linux_4_14 }}"
     dest: /var/netboot/kernels/vmlinuz-{{ linux_4_14 }}
 
-- name: Copy Xen 4.8
+- name: Copy Xen {{ xen_version }}
   copy:
-    src: "results/xen-4.8-amd64"
-    dest: /var/netboot/kernels/xen-4.8-amd64
+    src: "results/xen-{{ xen_version }}"
+    dest: "/var/netboot/kernels/xen-{{ xen_version }}"
 
 - name: create Linux 4.14.y symlink
   file:

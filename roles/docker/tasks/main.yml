@@ -54,4 +54,3 @@
       - /var/netboot:/srv/http
       - /var/rootfs:/srv/nfs/debian
       - /var/voyage:/srv/nfs/voyage
-      - /var/xen-dev:/srv/nfs/xen

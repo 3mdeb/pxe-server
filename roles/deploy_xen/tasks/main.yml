@@ -3,13 +3,19 @@
     src: "results/vmlinuz-xen-dev"
     dest: /var/netboot/kernels/vmlinuz-xen-dev
 
-- name: Copy Xen dev
+- name: Copy Xen dev gz
   copy:
-    src: "results/xen-dev"
-    dest: /var/netboot/kernels/xen-dev
+    src: "results/xen-dev.gz"
+    dest: /var/netboot/kernels/xen-dev.gz
 
-- name: Copy xen-image-minimal-genericx86-64.ext4
+- name: Unarchive Xen dev gz
+  command: gunzip -f /var/netboot/kernels/xen-dev.gz
+
+- name: Copy xen-image-minimal-genericx86-64.ext4.gz
   copy:
-    src: "results/xen-image-minimal-genericx86-64.ext4"
-    dest: /var/xen-image-minimal-genericx86-64.ext4
+    src: "results/xen-image-minimal-genericx86-64.ext4.gz"
+    dest: /var/xen-image-minimal-genericx86-64.ext4.gz
+
+- name: Unarchive xen-image-minimal-genericx86-64.ext4.gz
+  command: gunzip -f /var/xen-image-minimal-genericx86-64.ext4.gz
 
