@@ -1,0 +1,42 @@
+- name: install packages
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - apt-utils
+    - autoconf
+    - bc
+    - binutils
+    - bison
+    - build-essential
+    - ca-certificates
+    - cmake
+    - dialog
+    - dmidecode
+    - doxygen
+    - flex
+    - g++
+    - gcc-multilib
+    - gdb
+    - gettext
+    - git
+    - iasl
+    - liblzma-dev
+    - locales
+    - m4
+    - make
+    - makedev
+    - ncurses-dev
+    - nfs-common
+    - ntpdate
+    - python
+    - python-dev
+    - ssh
+    - sudo
+    - tmux
+    - vim
+    - wget
+    - wpasupplicant
+    - zlib1g-dev
+    - xen-system-amd64
+    - xen-tools

@@ -1,0 +1,37 @@
+---
+- hosts: all
+  user: debian
+  become: yes
+  become_user: root
+  become_method: su
+  roles:
+    - { role: 'common' }
+    - { role: 'debops.apt_preferences' }
+    - { role: 'apt' }
+    - { role: 'docker' }
+    - { role: 'netboot' }
+    - { role: 'tinycoreos' }
+    - { role: 'deploy_artifacts' }
+    - { role: 'voyage' }
+
+  tasks:
+
+    - name: copy core.gz to /var/netboot
+      copy:
+        src: /tmp/core.gz
+        dest: /var/netboot/core.gz
+        remote_src: yes
+
+    - name: Mount nfsd
+      mount:
+        path: /proc/fs/nfsd
+        src: nfsd
+        fstype: nfsd
+        state: present
+
+    - name: Restart server
+      command: /sbin/shutdown -r +1
+      async: 0
+      poll: 0
+      ignore_errors: true
+

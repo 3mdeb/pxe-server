@@ -1,0 +1,21 @@
+- name: mount /proc
+  mount:
+    path: "{{ rootfs_dir }}/proc"
+    src: /proc
+    opts: bind
+    fstype: proc
+    state: present
+- name: mount /dev
+  mount:
+    path: "{{ rootfs_dir }}/dev"
+    src: /dev
+    opts: bind
+    fstype: devtmpfs
+    state: present
+- name: mount /dev/pts
+  mount:
+    path: "{{ rootfs_dir }}/dev/pts"
+    src: /dev/pts
+    opts: bind
+    fstype: devpts
+    state: present

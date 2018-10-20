@@ -1,0 +1,9 @@
+---
+- name: build rootfs, kernels and prepare chroot
+  hosts: localhost
+  connection: local
+  roles:
+    - { role: 'common', tags: 'rootfs_prepare' }
+    - { role: 'debootstrap', tags: 'rootfs_prepare' }
+    - { role: 'linux-kernel', version: "{{ linux_4_9 }}", config: "{{ apu_config }}", tags: 'rootfs_prepare' }
+    - { role: 'linux-kernel', version: "{{ linux_4_14 }}", config: "{{ apu_config }}", tags: 'rootfs_prepare' }

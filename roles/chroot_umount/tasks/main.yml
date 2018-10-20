@@ -1,0 +1,18 @@
+- name: unmount /dev/pts
+  mount:
+    path: "{{ rootfs_dir }}/dev/pts"
+    src: /dev/pts
+    opts: bind
+    state: absent
+- name: unmount /dev
+  mount:
+    path: "{{ rootfs_dir }}/dev/pts"
+    src: /dev/pts
+    opts: bind
+    state: absent
+- name: unmount /proc
+  mount:
+    path: "{{ rootfs_dir }}/dev/pts"
+    src: /dev/pts
+    opts: bind
+    state: absent

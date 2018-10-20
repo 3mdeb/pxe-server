@@ -1,0 +1,8 @@
+release_version: "v1.1.1"
+linux_4_9: "4.9.128"
+linux_4_14: "4.14.71"
+apu_config: ""
+rootfs_tar_gz: "{{ results_dir }}/rootfs-{{ release_version }}.tar.gz"
+rootfs_dir: "/home/debian/scripts/rootfs"
+results_dir: "/home/debian/scripts/results"
+xen_version: "4.11-amd64"
