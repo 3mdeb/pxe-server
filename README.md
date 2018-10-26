@@ -1,20 +1,122 @@
 pxe-server
 ==========
 
-This repository contains PXE server that should help in installing, testing and
-developing operating systems and firmware for PXE-capable platforms.
+This repository contains PXE server (TFTP+NFS) that should help in installing,
+testing and developing operating systems and firmware for PXE-capable
+platforms.
 
 It was inspired by effort required to test PC Engines apu2 platform.
 
+We use PXE server without DHCP, what may cause problems to BSD systems and is
+subject of our further work on this project.
 
 Usage
 -----
 
+# pxe-server deployment
+
+## Ansible setup
+
 ```
-git clone https://github.com/3mdeb/pxe-server.git
-cd pxe-server
-NFS_SRV_IP=<host-pc-ip> ./init.sh
+virtualenv ansible-venv
+source ansible-venv/bin/activate
+pip install ansible
+ansible-galaxy install angstwad.docker_ubuntu
+ansible-galaxy install debops.apt_preferences
+ssh-keygen -f ~/.ssh/ansible
+ssh-add ~/.ssh/ansible
+ssh-copy-id -i ~/.ssh/ansible <user>@<target_host>
 ```
+
+## Initial deployment
+
+### Rootfs components creation
+
+```
+docker run --privileged --rm -v $HOME/.ansible:/root/.ansible  \
+-v $HOME/.ccache:/home/debian/.ccache -v $PWD:/home/debian/scripts \
+-t -i 3mdeb/rootfs-builder ansible-playbook -i hosts \
+/home/debian/scripts/create-rootfs-components.yml
+```
+
+### Rootfs preparation
+
+```
+docker run --privileged --rm -v $HOME/.ansible:/root/.ansible  \
+-v $HOME/.ccache:/home/debian/.ccache -v $PWD:/home/debian/scripts \
+-t -i 3mdeb/rootfs-builder ansible-playbook -i hosts \
+/home/debian/scripts/prepare-rootfs.yml
+```
+
+### Deploy
+
+Following procedure assume deployment on clean Debian as target system:
+
+```
+ansible-playbook -i "<target_host>," -b --ask-become-pass pxe-server.yml
+```
+
+### Tests
+
+`v1.0.0` tests results:
+
+| Description | Result |
+| --- | --- |
+| XEN1.2 Verify if IOMMU is enabled | PASS |
+| XEN1.4 Verify if IOMMU is enabled on Xen Linux dev | PASS |
+| XEN1.5 Verify if IOMMU is enabled on Xen dev | PASS |
+| DEB1.1 Debian from iPXE 4.14.y | PASS |
+| DEB1.5 Debian from iPXE 4.9.y | PASS |
+| TCL1.1 Boot to Core 6.4 booted over iPXE | PASS |
+| VOY1.1 Boot into Voyage installer | PASS |
+| PFS1.1 pfSense 2.4.x install test | PASS |
+
+
+### Performance
+
+```
+Tuesday 21 August 2018  17:47:35 +0200 (0:00:00.820)       0:05:09.644 ********
+===============================================================================
+apt ------------------------------------------------------------------- 136.75s
+copy ------------------------------------------------------------------- 63.61s
+docker ----------------------------------------------------------------- 51.06s
+unarchive -------------------------------------------------------------- 36.18s
+get_url ---------------------------------------------------------------- 10.50s
+netboot ----------------------------------------------------------------- 4.56s
+setup ------------------------------------------------------------------- 2.49s
+file -------------------------------------------------------------------- 2.33s
+mount ------------------------------------------------------------------- 0.91s
+command ----------------------------------------------------------------- 0.82s
+debops.apt_preferences -------------------------------------------------- 0.25s
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+total ----------------------------------------------------------------- 309.46s
+Tuesday 21 August 2018  17:47:35 +0200 (0:00:00.820)       0:05:09.633 ********
+===============================================================================
+apt : Install essential packages --------------------------------------- 99.51s
+Copy Debian rootfs ----------------------------------------------------- 59.49s
+docker : Start 3mdeb/pxe-server Docker container ----------------------- 35.68s
+Unarchive Debian rootfs ------------------------------------------------ 31.32s
+apt : Remove cdrom repo ------------------------------------------------ 12.19s
+docker : Install docker ------------------------------------------------ 10.67s
+Get Voyage ------------------------------------------------------------- 10.50s
+apt : Add trffic manager stable deb repo -------------------------------- 8.19s
+apt : Add trffic manager stable deb-src repo ---------------------------- 6.65s
+Unarchive Voyage -------------------------------------------------------- 4.86s
+apt : Add Docker repo --------------------------------------------------- 4.47s
+apt : Add Docker CE key to apt ------------------------------------------ 4.02s
+docker : Install docker-py ---------------------------------------------- 3.88s
+Gathering Facts --------------------------------------------------------- 2.49s
+Copy Linux 4.14.y ------------------------------------------------------- 2.24s
+Copy Linux 4.9.y -------------------------------------------------------- 1.88s
+apt : Install apt-transport-https --------------------------------------- 1.73s
+netboot : deploy menu.ipxe ---------------------------------------------- 1.43s
+netboot : copy preseed.cfg ---------------------------------------------- 1.04s
+Create /var/voyage ------------------------------------------------------ 1.01s
+Playbook run took 0 days, 0 hours, 5 minutes, 9 seconds
+```
+
+====
+
 
 `init.sh` downloads all necessary files, OS images, PXE and extracts them in
 proper directories.
@@ -105,4 +207,3 @@ Requesting configuration that many times makes a little mess, so as a temporary
 workaround add a static IP for the `net0/eth0` interface on Your DHCP server.
 The IP address requested will remain the same and so the problems will be gone
 too.
-

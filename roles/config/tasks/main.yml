@@ -1,0 +1,16 @@
+- name: replace fstab
+  copy:
+    src: files/fstab
+    dest: /etc/fstab
+
+- name: replace issue
+  copy:
+    src: files/issue
+    dest: /etc/issue
+
+- name: change root password
+  shell: echo root:debian|chpasswd
+
+- name: configure hostname
+  hostname:
+    name: rootfs-{{ release_version }}

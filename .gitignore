@@ -1,3 +1,4 @@
-debian
-voyage
-netboot
+ansible-venv
+*.retry
+results
+rootfs

@@ -1,0 +1,24 @@
+- name: check if "{{ rootfs_tar_gz }}" exist
+  stat:
+    path: "{{ rootfs_tar_gz }}"
+  register: rootfs_file
+
+- name: cleanup rootfs dir
+  file:
+    state: absent
+    path: "{{ rootfs_dir }}"
+  when: not rootfs_file.stat.exists
+
+- name: cleanup rootfs dir
+  file:
+    state: directory
+    path: "{{ rootfs_dir }}"
+  when: not rootfs_file.stat.exists
+
+- name: debootstrap first stage
+  command: debootstrap --foreign --include=python --arch amd64 sid {{ rootfs_dir }} http://deb.debian.org/debian
+  when: not rootfs_file.stat.exists
+
+- name: debootstrap second stage
+  command: chroot {{ rootfs_dir }} /debootstrap/debootstrap --second-stage
+  when: not rootfs_file.stat.exists

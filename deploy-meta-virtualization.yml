@@ -1,0 +1,29 @@
+---
+- hosts: all
+  user: debian
+  become: yes
+  become_user: root
+  become_method: su
+  roles:
+    - { role: 'common' }
+    - { role: 'docker' }
+    - { role: 'deploy_xen' }
+
+  tasks:
+    - name: Mount nfsd
+      mount:
+        path: /proc/fs/nfsd
+        src: nfsd
+        fstype: nfsd
+        state: present
+    - name: Mount xen-image-minimal-genericx86-64.ext4
+      mount:
+        path: /var/xen-dev
+        src: /var/xen-image-minimal-genericx86-64.ext4
+        fstype: ext4
+        state: present
+    - name: Restart server
+      command: /sbin/shutdown -r +1
+      async: 0
+      poll: 0
+      ignore_errors: true

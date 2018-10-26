@@ -1,0 +1,22 @@
+# TODO: because of iso_extract lack of support for directories,
+# implementation of ISO extraction for Voyage would be to convolutes, we
+# leaving it as it is
+- name: Get Voyage
+  get_url:
+    url: https://cloud.3mdeb.com/index.php/s/rUZPwRHOjxpSxN4/download
+    dest: /tmp/voyage.tar.gz
+    checksum: sha256:86934186fde2cbc749b2e33d027977f1b3a0cf02f69c2ffc9446e620b3d6e5c6
+
+- name: Create /var/voyage
+  file:
+    path: /var/voyage
+    state: directory
+
+- name: Unarchive Voyage
+  unarchive:
+    src: /tmp/voyage.tar.gz
+    dest: /var/voyage
+    remote_src: yes
+    keep_newer: yes
+    group: debian
+    owner: debian
