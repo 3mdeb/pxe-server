@@ -4,22 +4,12 @@ FreeBSD support
 # Requirements
 
 * TFTP server with root set to `/tftpboot`
-* DHCP server - below is example of configuration for `dnsmasq`
-
-## dnsmasq sample configuration
-
-```
-tftp-root=/tftpboot
-enable-tftp
-dhcp-host=00:de:ad:be:ef:42,set:freebsd,192.168.10.42
-dhcp-boot=tag:freebsd,rancheros.ipxe
-```
+* DHCP server
+* FreeBSD-based NFS server
 
 # Environment preparation
 
-```
-./freebsd_pxe_preparation.sh
-```
+TBD
 
 Variables for script manipulation:
 * `PXE_SERVER` - sets access to PXE server host in form `<user>@<host>`
