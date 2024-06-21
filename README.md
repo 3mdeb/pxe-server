@@ -11,8 +11,10 @@ subject of our further work on this project.
 
 ## Usage
 
+<!--
 # pxe-server deployment
 
+TBD: what is to goal of following deployment procedure?
 ## Ansible setup
 
 ```
@@ -28,7 +30,12 @@ ssh-copy-id -i ~/.ssh/ansible <user>@<target_host>
 
 ## Initial deployment
 
+-->
+
 ### Required containers creation
+
+Before anything below will work you need some containers used further in the
+process.
 
 #### Build apt-cacher
 
@@ -36,7 +43,7 @@ ssh-copy-id -i ~/.ssh/ansible <user>@<target_host>
 ./apt-cacher/build.sh
 ```
 
-#### Run apt-caher
+#### Run apt-cacher
 
 ```bash
 docker compose up

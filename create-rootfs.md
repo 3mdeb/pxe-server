@@ -1,20 +1,21 @@
-Debian rootfs
-=============
+# Debian rootfs
 
 This paper describes procedure of creating a Debian rootfs for nfs server.
 
 #### Requirements
 
 1. Installed `debootstrap` package:
+
 ```
 sudo apt-get install -y debootstrap
 ```
-2. ~1GB free disk space.
 
+2. ~1GB free disk space.
 
 ## Creating base system
 
 Choose a directory where the rootfs should be created, for example:
+
 ```
 mkdir debian-rootfs
 ```
@@ -78,9 +79,11 @@ passwd
 
 Probably You will want to install some packages, You can do it now inside chroot
 by running:
+
 ```
 apt-get install -y <package1> <package2> ...
 ```
+
 or just boot the system with PXE and run it on target machine.
 
 There is a guide how to setup pxe-server [here](README.md), but it is customized
@@ -125,3 +128,4 @@ For `flashrom` compilation these packages are necessary:
 apt-get install -y libpci-dev libusb-dev \
     libusb-1.0-0-dev libftdi-dev
 ```
+
