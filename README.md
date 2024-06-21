@@ -1,5 +1,4 @@
-pxe-server
-==========
+# pxe-server
 
 This repository contains PXE server (TFTP+NFS) that should help in installing,
 testing and developing operating systems and firmware for PXE-capable
@@ -10,8 +9,7 @@ It was inspired by effort required to test PC Engines apu2 platform.
 We use PXE server without DHCP, what may cause problems to BSD systems and is
 subject of our further work on this project.
 
-Usage
------
+## Usage
 
 # pxe-server deployment
 
@@ -30,9 +28,32 @@ ssh-copy-id -i ~/.ssh/ansible <user>@<target_host>
 
 ## Initial deployment
 
+### Required containers creation
+
+#### Build apt-cacher
+
+```bash
+./apt-cacher/build.sh
+```
+
+#### Run apt-caher
+
+```bash
+docker compose up
+```
+
+#### Rootfs builder container
+
+You may want to check `rootfs-builder/Dockerfile` first to confirm you like
+Debian base image which would be used.
+
+```bash
+./rootfs-builder/build.sh <ip_address>
+```
+
 ### Rootfs components creation
 
-```
+```bash
 docker run --privileged --rm -v $HOME/.ansible:/root/.ansible  \
 -v $HOME/.ccache:/home/debian/.ccache -v $PWD:/home/debian/scripts \
 -t -i 3mdeb/rootfs-builder ansible-playbook -i hosts \
@@ -41,7 +62,7 @@ docker run --privileged --rm -v $HOME/.ansible:/root/.ansible  \
 
 ### Rootfs preparation
 
-```
+```bash
 docker run --privileged --rm -v $HOME/.ansible:/root/.ansible  \
 -v $HOME/.ccache:/home/debian/.ccache -v $PWD:/home/debian/scripts \
 -t -i 3mdeb/rootfs-builder ansible-playbook -i hosts \
@@ -60,17 +81,16 @@ ansible-playbook -i "<target_host>," -b --ask-become-pass pxe-server.yml
 
 `v1.0.0` tests results:
 
-| Description | Result |
-| --- | --- |
-| XEN1.2 Verify if IOMMU is enabled | PASS |
-| XEN1.4 Verify if IOMMU is enabled on Xen Linux dev | PASS |
-| XEN1.5 Verify if IOMMU is enabled on Xen dev | PASS |
-| DEB1.1 Debian from iPXE 4.14.y | PASS |
-| DEB1.5 Debian from iPXE 4.9.y | PASS |
-| TCL1.1 Boot to Core 6.4 booted over iPXE | PASS |
-| VOY1.1 Boot into Voyage installer | PASS |
-| PFS1.1 pfSense 2.4.x install test | PASS |
-
+| Description                                        | Result |
+| -------------------------------------------------- | ------ |
+| XEN1.2 Verify if IOMMU is enabled                  | PASS   |
+| XEN1.4 Verify if IOMMU is enabled on Xen Linux dev | PASS   |
+| XEN1.5 Verify if IOMMU is enabled on Xen dev       | PASS   |
+| DEB1.1 Debian from iPXE 4.14.y                     | PASS   |
+| DEB1.5 Debian from iPXE 4.9.y                      | PASS   |
+| TCL1.1 Boot to Core 6.4 booted over iPXE           | PASS   |
+| VOY1.1 Boot into Voyage installer                  | PASS   |
+| PFS1.1 pfSense 2.4.x install test                  | PASS   |
 
 ### Performance
 
@@ -117,7 +137,6 @@ Playbook run took 0 days, 0 hours, 5 minutes, 9 seconds
 
 ====
 
-
 `init.sh` downloads all necessary files, OS images, PXE and extracts them in
 proper directories.
 
@@ -128,8 +147,7 @@ Please note that `init.sh` also download prepared Debian boot images. In root
 directory of those images you can find `CHANGELOG` document which briefly
 describe modifications.
 
-APU2 development and testing
-----------------------------
+## APU2 development and testing
 
 ### Setting up docker container
 
@@ -168,7 +186,7 @@ initialization (`NFS_SRV_IP`).
 Currently supported options are:
 
 1. `Debian stable netboot` - it is a Debian Stretch rootfs served over nfs with custom
-kernel
+   kernel
 2. `Voyage netinst` - a Voyage Linux network installation image
 3. `Debian stable netinst` - runs a Debian stable amd64 network installation from external repository
 4. `Debian testing netinst` - runs a Debian testing amd64 network installation from external repository
@@ -182,14 +200,13 @@ Those credentials are visible during boot:
 ```
 Debian GNU/Linux 9 apu2 ttyS0 [root:debian]
 
-apu2 login: 
+apu2 login:
 ```
 
 ## Robot Framework
 
 Some automation of above process has been prepared. Relevant source code can be
 found [here](https://github.com/pcengines/apu-test-suite)
-
 
 ## Issues
 
@@ -201,7 +218,7 @@ configuration is retrieved from DHCP 3 times:
 3. At system startup (defined in /etc/network/interfaces)
 
 > 1 and 2 are necessary, 3 is only needed to get internet connection on booted
-system.
+> system.
 
 Requesting configuration that many times makes a little mess, so as a temporary
 workaround add a static IP for the `net0/eth0` interface on Your DHCP server.

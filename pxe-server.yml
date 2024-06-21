@@ -5,17 +5,16 @@
   become_user: root
   become_method: su
   roles:
-    - { role: 'common' }
-    - { role: 'debops.apt_preferences' }
-    - { role: 'apt' }
-    - { role: 'docker' }
-    - { role: 'netboot' }
-    - { role: 'tinycoreos' }
-    - { role: 'deploy_artifacts' }
-    - { role: 'voyage' }
+    - { role: "common" }
+    - { role: "debops.debops" }
+    - { role: "apt" }
+    - { role: "docker" }
+    - { role: "netboot" }
+    - { role: "tinycoreos" }
+    - { role: "deploy_artifacts" }
+    - { role: "voyage" }
 
   tasks:
-
     - name: copy core.gz to /var/netboot
       copy:
         src: /tmp/core.gz
@@ -34,4 +33,3 @@
       async: 0
       poll: 0
       ignore_errors: true
-
