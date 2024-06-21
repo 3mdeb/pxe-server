@@ -45,4 +45,4 @@ service nfs-kernel-server start
 
 echo "- Nfs server is up and running.."
 cd $HTTP_SRV
-python -m SimpleHTTPServer 8000
+python3 -m http.server

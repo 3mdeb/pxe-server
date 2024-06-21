@@ -96,9 +96,9 @@ apt-get install -y nfs-common locales \
     sudo bc ssh ntpdate gettext \
     autoconf wpasupplicant dialog \
     makedev binutils apt-utils \
-    git vim tmux python \
+    git vim tmux python3 \
     ca-certificates \
-    python-dev ntpdate \
+    python3-dev ntpdate \
     build-essential \
     iasl \
     m4 \

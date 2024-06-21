@@ -7,8 +7,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   git \
   vim \
   tmux \
-  python \
-  python-dev \
+  python3 \
+  python3-dev \
   ntpdate \
   ca-certificates \
   nfs-kernel-server \

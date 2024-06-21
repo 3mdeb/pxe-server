@@ -34,5 +34,5 @@
     update_cache: yes
   with_items:
     - docker-ce
-    - python-pip
+    - python3-pip
     - gzip
