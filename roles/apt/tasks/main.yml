@@ -3,12 +3,12 @@
     repo: deb cdrom:[Debian GNU/Linux 9.4.0 _Stretch_ - Official amd64 xfce-CD Binary-1 20180310-11:21]/ stretch main
     state: absent
 
-- name: Add trffic manager stable deb repo
+- name: Add traffic manager stable deb repo
   apt_repository:
     repo: deb http://debian-archive.trafficmanager.net/debian/ stable main contrib non-free
     state: present
 
-- name: Add trffic manager stable deb-src repo
+- name: Add traffic manager stable deb-src repo
   apt_repository:
     repo: deb-src http://debian-archive.trafficmanager.net/debian/ stable main contrib non-free
     state: present
