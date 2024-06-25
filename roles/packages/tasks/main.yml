@@ -29,8 +29,8 @@
     - ncurses-dev
     - nfs-common
     - ntpdate
-    - python
-    - python-dev
+    - python3
+    - python3-dev
     - ssh
     - sudo
     - tmux

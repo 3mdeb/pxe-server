@@ -1,4 +1,4 @@
-FROM debian:stretch-backports
+FROM debian:bookworm
 
 MAINTAINER Piotr Król <piotr.krol@3mdeb.com>
 
@@ -9,7 +9,7 @@ ENV http_proxy ${HTTP_PROXY}
 RUN \
 	useradd -p locked -m debian && \
 	apt-get -qq update && \
-	apt-get -qqy -t stretch-backports install \
+	apt-get -qqy install \
 		ansible \
 		bc \
 		build-essential \
@@ -19,9 +19,15 @@ RUN \
 		libelf-dev \
 		libssl-dev \
 		lsb-release \
-		python \
-		unzip \
+		python3 \
 		tar \
+		unzip \
+    bison \
+    cpio \
+    flex \
+    git \
+    rsync \
+    debhelper \
 	&& apt-get clean
 
 ENV PATH="/usr/lib/ccache:${PATH}"

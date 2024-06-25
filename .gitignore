@@ -2,3 +2,4 @@ ansible-venv
 *.retry
 results
 rootfs
+ansible.log

@@ -3,7 +3,23 @@
   hosts: localhost
   connection: local
   roles:
-    - { role: 'common', tags: 'rootfs_prepare' }
-    - { role: 'debootstrap', tags: 'rootfs_prepare' }
-    - { role: 'linux-kernel', version: "{{ linux_4_9 }}", config: "{{ apu_config }}", tags: 'rootfs_prepare' }
-    - { role: 'linux-kernel', version: "{{ linux_4_14 }}", config: "{{ apu_config }}", tags: 'rootfs_prepare' }
+    - { role: "common", tags: "rootfs_prepare" }
+    - { role: "debootstrap", tags: "rootfs_prepare" }
+    - {
+        role: "linux-kernel",
+        version: "{{ linux_5_15 }}",
+        config: "{{ apu_config }}",
+        tags: "rootfs_prepare",
+      }
+    - {
+        role: "linux-kernel",
+        version: "{{ linux_6_1 }}",
+        config: "{{ apu_config }}",
+        tags: "rootfs_prepare",
+      }
+    - {
+        role: "linux-kernel",
+        version: "{{ linux_6_6 }}",
+        config: "{{ apu_config }}",
+        tags: "rootfs_prepare",
+      }
