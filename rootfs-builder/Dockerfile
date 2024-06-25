@@ -20,8 +20,14 @@ RUN \
 		libssl-dev \
 		lsb-release \
 		python3 \
-		unzip \
 		tar \
+		unzip \
+    bison \
+    cpio \
+    flex \
+    git \
+    rsync \
+    debhelper \
 	&& apt-get clean
 
 ENV PATH="/usr/lib/ccache:${PATH}"

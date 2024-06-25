@@ -3,32 +3,44 @@
     src: "results/rootfs-{{ release_version }}.tar.gz"
     dest: /tmp/rootfs-{{ release_version }}.tar.gz
 
-- name: Copy Linux 4.9.y
+- name: Copy Linux 5.15.y
   copy:
-    src: "results/vmlinuz-{{ linux_4_9 }}"
-    dest: /var/netboot/kernels/vmlinuz-{{ linux_4_9 }}
+    src: "results/vmlinuz-{{ linux_5_15 }}"
+    dest: /var/netboot/kernels/vmlinuz-{{ linux_5_15 }}
 
-- name: Copy Linux 4.14.y
+- name: Copy Linux 6.1.y
   copy:
-    src: "results/vmlinuz-{{ linux_4_14 }}"
-    dest: /var/netboot/kernels/vmlinuz-{{ linux_4_14 }}
+    src: "results/vmlinuz-{{ linux_6_1 }}"
+    dest: /var/netboot/kernels/vmlinuz-{{ linux_6_1 }}
+
+- name: Copy Linux 6.6.y
+  copy:
+    src: "results/vmlinuz-{{ linux_6_6 }}"
+    dest: /var/netboot/kernels/vmlinuz-{{ linux_6_6 }}
 
 - name: Copy Xen {{ xen_version }}
   copy:
     src: "results/xen-{{ xen_version }}"
     dest: "/var/netboot/kernels/xen-{{ xen_version }}"
 
-- name: create Linux 4.14.y symlink
+- name: create Linux 5.15.y symlink
   file:
-    src: vmlinuz-{{ linux_4_14 }}
-    dest: /var/netboot/kernels/vmlinuz-4.14.y
+    src: vmlinuz-{{ linux_5_15 }}
+    dest: /var/netboot/kernels/vmlinuz-5.15.y
     state: link
     force: yes
 
-- name: create Linux 4.9.y symlink
+- name: create Linux 6.1.y symlink
   file:
-    src: vmlinuz-{{ linux_4_9 }}
-    dest: /var/netboot/kernels/vmlinuz-4.9.y
+    src: vmlinuz-{{ linux_6_1 }}
+    dest: /var/netboot/kernels/vmlinuz-6.1.y
+    state: link
+    force: yes
+
+- name: create Linux 6.6.y symlink
+  file:
+    src: vmlinuz-{{ linux_6_6 }}
+    dest: /var/netboot/kernels/vmlinuz-6.6.y
     state: link
     force: yes
 
