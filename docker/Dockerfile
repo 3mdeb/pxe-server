@@ -2,7 +2,11 @@ FROM debian:jessie
 
 MAINTAINER Piotr Król <piotr.krol@3mdeb.com>
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN echo "deb http://archive.debian.org/debian jessie main" > /etc/apt/sources.list && \
+  echo "deb http://archive.debian.org/debian-security jessie/updates main" >> /etc/apt/sources.list && \
+  echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/99archive
+
+RUN apt-get update && apt-get install -y --force-yes --no-install-recommends \
   apt-utils \
   git \
   vim \
