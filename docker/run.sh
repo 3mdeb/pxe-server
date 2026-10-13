@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+trap 'echo "ERROR: \"${BASH_COMMAND}\" failed with exit code $?" >&2' ERR
 
 export_base="/srv/nfs/"
 HTTP_SRV="/srv/http/"
@@ -20,7 +21,6 @@ echo "/srv/nfs *(rw,sync,fsid=0,no_subtree_check,no_root_squash)" | tee /etc/exp
 echo "/srv/nfs/debian *(rw,sync,no_subtree_check,no_root_squash)" | tee -a /etc/exports
 echo "/srv/nfs/xen *(rw,sync,no_subtree_check,no_root_squash)" | tee -a /etc/exports
 echo "/srv/nfs/voyage *(rw,sync,no_subtree_check,no_root_squash)" | tee -a /etc/exports
-echo "/srv/nfs/xen *(rw,sync,no_subtree_check,no_root_squash)" | tee -a /etc/exports
 
 read -a exports <<< "${@}"
 for export in "${exports[@]}"; do
@@ -33,9 +33,17 @@ done
 
 echo -e "\n- Initializing nfs server.."
 mkdir -p /run/sendsigs.omit.d
-rpcbind -i
-# set static port to avoid using random ports by nfs
-rpc.statd --no-notify --port 32765 --outgoing-port 32766
+# libtirpc in Jessie allocates per-fd tables sized by the open files limit and
+# fails with "out of memory" on the huge default limit set by recent Docker
+ulimit -n 1024
+# rpcbind is not started here, the host's rpcbind is used instead (see start.sh)
+# the host may already run its own rpc.statd registered with the shared rpcbind
+if rpcinfo -u localhost 100024 >/dev/null 2>&1; then
+    echo "- rpc.statd already running on the host, reusing it"
+else
+    # set static port to avoid using random ports by nfs
+    rpc.statd --no-notify --port 32765 --outgoing-port 32766
+fi
 # force nfsv3 over udp due to TCP issues (investigating)
 rpc.nfsd -V3 -N2 -N4 -d 8
 rpc.mountd -V3 -N2 -N4 --port 32767
