@@ -41,7 +41,7 @@ wget https://cloud.3mdeb.com/index.php/s/AQuUdsYkBzO9UJz/download -O core.tar.gz
 
 mkdir debian
 tar -xvpzf debian-stable.tar.gz -C ./debian --numeric-owner
-tar -xvpzf xen.tar.gz -C ./debian --numeric-owner
+tar -xvpzf xen.tar.gz -C . --numeric-owner
 
 mkdir voyage
 wget https://cloud.3mdeb.com/index.php/s/tU2mEoY7UEbIWT1/download -O voyage-0.11.0_amd64.tar.gz
